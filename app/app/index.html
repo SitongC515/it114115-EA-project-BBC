@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC Replica Website</title>
+    <script src="https://kit.fontawesome.com/e6259258cb.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href=".vscode\main.css" />
+    <link rel="stylesheet" href=".vscode\navBar.css" />
+</head>
+<body>
+    <nav>
+      <!--BBC Logo to the far left of the navbar-->
+      <a href="javascript:void(0);" id="BBCImg">
+        <img src="https://ichef.bbci.co.uk/images/ic/400x225_b/p0f2ssyx.jpg" alt="BBC Logo"/>
+      </a>
+      <!--User Sign In-->
+      <a href="javascript:void(0)" id="nav-sign-in">
+        <i class="fas fa-user-circle"></i>
+        <div id="nav-sign-in-text">Sign In</div>
+        <div class="nav-line nav-blue"></div>
+      </a>
+      <!--Bell Icon-->
+      <a href="javascript:void(0);" id="nav-bell-icon">
+        <i class="fas fa-bell"></i>
+        <div class="nav-line nav-dark-blue"></div> 
+      </a>
+      <!--Main Nav Here. On full width - start with Home & end with CBeebies-->
+      <section id="main-nav">
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-home">
+          <div>Home</div>
+          <div class="nav-line nav-blue"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-news">
+          <div>News</div>
+          <div class="nav-line nav-red"></div>
+        </a>
+        <a
+          href="javascript:void(0);" class="main-nav-entry" id="main-nav-sport">
+          <div>Sport</div>
+          <div class="nav-line nav-yellow"></div>
+        </a>
+        <a
+          href="javascript:void(0);" class="main-nav-entry" id="main-nav-weather">
+          <div>Weather</div>
+          <div class="nav-line nav-light-blue"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-iplayer">
+          <div>iPlayer</div>
+          <div class="nav-line nav-pink"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-sounds">
+          <div>Sounds</div>
+          <div class="nav-line nav-orange"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-cbbc">
+          <div>CBBC</div>
+          <div class="nav-line nav-green"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-cbeebies">
+          <div>CBeebies</div>
+          <div class="nav-line nav-yellow"></div>
+        </a>
+        <a href="javascript:void(0);" class="main-nav-entry" id="main-nav-more">
+          <div>More</div>
+          <i class="fas fa-caret-down"></i>
+          <div class="nav-line nav-yellow"></div>
+        </a>
+      </section>
+      <!--Search-->
+      <a href="javascript:void(0);" id="main-nav-search">
+        <i class="fas fa-search"></i>
+        <div id="nav-search-text">Search</div>
+        <div class="nav-line nav-black"></div>
+      </a>
+    </nav>
+    <!--Extra drop down that opens up when the user clicks on the more tab-->
+    <section id="nore-nav">
+      <div id="more-nav-content">
+        <!--The X that closes the DROPDOWN-->
+        <div id="cross-icon"><i class="fas fa-times"></i></div>
+        <a href="javascript:void(0);">News</a>
+        <a href="javascript:void(0);">Sport</a>
+        <a href="javascript:void(0);">Weather</a>
+        <a href="javascript:void(0);">iPlayer</a>
+        <a href="javascript:void(0);">Sounds</a>
+        <a href="javascript:void(0);">CBBC</a>
+        <a href="javascript:void(0);">CBeebies</a>
+        <a href="javascript:void(0);">Food</a>
+        <a href="javascript:void(0);">Bitesize</a>
+        <a href="javascript:void(0);">Arts</a>
+        <a href="javascript:void(0);">Taster</a>
+        <a href="javascript:void(0);">Local</a>
+        <a href="javascript:void(0);">Three</a>
+      </div>
+    </section>
+    <!--START OF MAIN PAGE-->
+    <div id="BBCTitle">
+      <div class="center-content title-text">Welcome to the BBC</div>
+    </div>
+    <!--OPENING NEWS CARDS-->
+    <div class="document-container" style="margin-top: 20px">
+      <div class="center-content opening-cards"></div>
+    </div>
+    <!--OPENING NEWS CARDS-->
+    <div class="document-container" style="margin-top: 20px;">
+      <div class="center-content opening-cards">
+        <a class="first-card" href="javascript:void(0)">
+          <div class="card-img-container">
+            <img
+              src="https://ichef.bbci.co.uk/news/800/cpsprodpb/3793/live/38825d50-d030-11ef-8db9-53d455b1ee6f.jpg.webp"
+              alt="drowning image"
+              />
+          </div>
+          <p>A man attempting to cross the world,drowned today.</p>
+        </a>
+        <a href="javascript:void(0);">
+          <div class="card-img-container">
+            <img
+            src="https://ichef.bbci.co.uk/ace/standard/1024/cpsprodpb/aa32/live/b3cc4c90-0df3-11f0-ac9f-c37d6fd89579.jpg"
+            alt="Scientists Discover"
+          />
+        </div>
+        <p>
+          Scientists discover that stomach cancer is caused by swllowing
+          small amount of saliva along period of time.
+        </p>  
+        </a>
+        <a href="javascript:void(0);">
+          <div class="card-img-container">
+            <img
+            src="https://ichef.bbci.co.uk/images/ic/800xn/p0l0zrzk.jpg.webp"
+            alt="mug Shot"
+          />
+        </div>
+        <p>
+          American man, convicted of octuple homicide claimed that he was just
+          cleaning his gun it went off.
+        </p>
+        </a>   
+      </div>
+    </dia>
+    <!--SCRIPT. Do not touch-->
+    <script src="script.js"></script>
+</body>    
+</html>
