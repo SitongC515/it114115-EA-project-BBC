@@ -189,3 +189,34 @@ def unfollow(username):
     db.session.commit()
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
+
+@app.route('/world', endpoint='world')
+@login_required
+def world():
+    # Here you would fetch actual world news articles or data.
+    return render_template('world.html.j2', title=_('World News'))
+
+@app.route('/politics')
+@login_required
+def politics():
+    return render_template('politics.html.j2', title='Politics')
+
+@app.route('/business')
+@login_required
+def business():
+    return render_template('business.html.j2', title='Business')
+
+@app.route('/technology')
+@login_required
+def technology():
+    return render_template('technology.html.j2', title='Technology')
+
+@app.route('/sports')
+@login_required
+def sports():
+    return render_template('sports.html.j2', title='Sports')
+
+@app.route('/entertainment')
+@login_required
+def entertainment():
+    return render_template('entertainment.html.j2', title='Entertainment')

@@ -1,15 +1,21 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <h1>{{ _('Hi, %(username)s!', username=current_user.username) }}</h1>
+    <h1>{{ _('Welcome, %(username)s!', username=current_user.username) }}</h1>
+    <p>{{ _('Here’s the latest news and updates for you.') }}</p>
+    
     {% if form %}
         {{ wtf.quick_form(form) }}
         <br/>
     {% endif %}
-    {% for post in posts %}
-        {% include "_post.html.j2" %}
-    {% endfor %}
-    <nav aria-label="...">
+    
+    <div class="user-posts">
+        {% for post in posts %}
+            {% include "_post.html.j2" %}
+        {% endfor %}
+    </div>
+
+    <nav aria-label="Post navigation">
         <ul class="pager">
             <li class="previous{% if not prev_url %} disabled{% endif %}">
                 <a href="{{ prev_url or '#' }}">

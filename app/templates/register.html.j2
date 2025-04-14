@@ -1,8 +1,11 @@
 {% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-    <h1>{{ _('Register') }}</h1>
+    <h1>{{ _('Create Your BBC News Account') }}</h1>
+    <p>{{ _('Please fill in the details below to register.') }}</p>
     <div class="row">
-        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+        <div class="col-md-6 col-md-offset-3">
+            {{ wtf.quick_form(form) }}
+        </div>
     </div>
 {% endblock %}

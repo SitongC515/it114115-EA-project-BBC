@@ -1,8 +1,26 @@
-{% extends "base.html.j2" %}
+{% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+    {{ _('Edit Your BBC News Profile') }}
+{% endblock %}
+
+{% block navbar %}
+    {# Include your navigation bar here if needed #}
+{% endblock %}
+
 {% block app_content %}
-    <h1>{{ _('Edit Profile') }}</h1>
-    <div class="row">
-        <div class="col-md-4">{{ wtf.quick_form(form) }}</div>
+    <div class="container">
+        <h1>{{ _('Edit Your BBC News Profile') }}</h1>
+        <p>{{ _('Update your information below.') }}</p>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="script.js"></script>
 {% endblock %}
