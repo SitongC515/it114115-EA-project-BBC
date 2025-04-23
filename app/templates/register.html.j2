@@ -1,11 +1,18 @@
-{% extends "base.html.j2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
+
 {% block app_content %}
-    <h1>{{ _('Create Your BBC News Account') }}</h1>
-    <p>{{ _('Please fill in the details below to register.') }}</p>
+    <h1>{{ _('Sign In') }}</h1>
+    <p>{{ _('Please enter your email and password to sign in.') }}</p>
     <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-4">
             {{ wtf.quick_form(form) }}
         </div>
     </div>
+    <p>
+        {{ _('Forgot Your Password?') }}
+        <a href="{{ url_for('reset_password_request') }}">{{ _('Reset It Here') }}</a>
+    </p>
+    <p>
+        {{ _('New User?') }} <a href="{{ url_for('register') }}">{{ _('Register Here') }}</a>
+    </p>
 {% endblock %}

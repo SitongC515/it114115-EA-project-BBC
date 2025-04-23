@@ -8,20 +8,19 @@ from app.models import User
 
 
 class LoginForm(FlaskForm):
-    username = StringField(_l('Username'), validators=[DataRequired()])
-    password = PasswordField(_l('Password'), validators=[DataRequired()])
-    remember_me = BooleanField(_l('Remember Me'))
-    submit = SubmitField(_l('Sign In'))
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField(_l('Username'), validators=[DataRequired()])
-    email = StringField(_l('Email'), validators=[DataRequired(), Email()])
-    password = PasswordField(_l('Password'), validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField(
-        _l('Repeat Password'), validators=[DataRequired(),
-                                           EqualTo('password')])
-    submit = SubmitField(_l('Register'))
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Register')
 
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()

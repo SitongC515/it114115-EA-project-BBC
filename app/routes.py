@@ -220,3 +220,26 @@ def sports():
 @login_required
 def entertainment():
     return render_template('entertainment.html.j2', title='Entertainment')
+
+@app.route('/setcookie', methods=['POST', 'GET'])
+def setcookie():
+    if request.method == 'POST':
+        user = request.form['nm']  # Assuming 'nm' is the form field name
+        resp = make_response(render_template('readcookie.html'))
+        expire_date = datetime.datetime.now()
+        expire_date = expire_date + datetime.timedelta(seconds=5)
+        resp.set_cookie('userID', user, expires=expire_date)
+        resp.set_cookie('secureUserID', user, expires=expire_date, secure=True)
+        resp.set_cookie('httpOnlyUserID', user, expires=expire_date, httponly=True)
+        return resp
+
+@app.route('/getcookie')
+def getcookie():
+    userID = request.cookies.get('userID') or ''
+    secureUserID = request.cookies.get('secureUserID') or ''
+    httpOnlyUserID = request.cookies.get('httpOnlyUserID') or ''
+    return f"""
+    <h1>userID: {userID}</h1>
+    <h1>secureUserID: {secureUserID}</h1>
+    <h1>httpOnlyUserID: {httpOnlyUserID}</h1>
+    """
