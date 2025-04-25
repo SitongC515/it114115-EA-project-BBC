@@ -62,7 +62,7 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(username=form.username.data).first() 
         if user is None or not user.check_password(form.password.data):
             flash(_('Invalid username or password'))
             return redirect(url_for('login'))
@@ -130,7 +130,9 @@ def reset_password(token):
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    print(f"Username: {username}")  # Check the username
     user = User.query.filter_by(username=username).first_or_404()
+    print(f"User: {user}")  # Check if the user was found
     page = request.args.get('page', 1, type=int)
     posts = user.followed_posts().paginate(
         page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
