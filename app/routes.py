@@ -209,7 +209,7 @@ def weather():
 @app.route('/Comment')
 @login_required
 def Comment():
-    return render_template('Comment', title='Comment')
+    return render_template('Comment.html.j2', title='Comment')
 
 
 @app.route('/setcookie', methods=['POST', 'GET'])
