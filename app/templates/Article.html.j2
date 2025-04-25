@@ -1,0 +1,164 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC News</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .header-logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .header-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-auth {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Navigation Styles */
+        .navigation {
+            background-color: #fff;
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .navigation-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 2fr 3fr 2fr;
+            gap: 20px;
+        }
+
+        .news-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .news-item h2 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .news-item p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .news-item .details {
+            font-size: 0.8em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="header-logo">BBC</div>
+        <div class="header-links">
+            <span>News</span>
+            <span>Sport</span>
+            <span>Business</span>
+            <span>Innovation</span>
+            <span>Culture</span>
+            <span>Arts</span>
+            <span>Travel</span>
+            <span>Earth</span>
+            <span>Audio</span>
+            <span>Video</span>
+            <span>Live</span>
+        </div>
+        <div class="header-auth">
+            <button>Register</button>
+            <button>Sign In</button>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="navigation-links">
+            <span>Home</span>
+            <span>News</span>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="news-item">
+            <img src="https://placehold.co/400x225" alt="News Image">
+            <h2>Trump says he is 'not happy' with deadly Russian strikes on Kyiv</h2>
+            <p>The overnight strikes killed at least 12 people and injured 90 more, local officials have said.</p>
+            <div class="details">2 hrs ago | World</div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://placehold.co/600x340" alt="News Image">
+            <h2>News Headline Example</h2>
+            <p>This is a brief summary of the news article. It provides a quick overview of the main points.</p>
+            <div class="details">1 hr ago | Local</div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://placehold.co/400x225" alt="News Image">
+            <h2>Pakistan suspends visas for Indians after deadly Kashmir attack on tourists</h2>
+            <p>It comes after Delhi's retaliatory measures following a militant attack in Indian-administered Kashmir that killed 26 tourists.</p>
+            <div class="details">16 hrs ago | Asia</div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://placehold.co/400x225" alt="News Image">
+            <h2>I'm alive but three in my group didn't make it' - Kashmir attack survivor</h2>
+            <p>Tourists are returning home after a deadly gun attack killed 26 visitors in Indian-administered Kashmir.</p>
+            <div class="details">2 hrs ago | Asia</div>
+        </div>
+
+         <div class="news-item">
+            <img src="https://placehold.co/400x225" alt="News Image">
+            <h2>California passes Japan as fourth largest economy</h2>
+            <p>The US state expresses worries that President Donald Trump's tariffs could stunt future growth.</p>
+            <div class="details">3 hrs ago | World</div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://placehold.co/400x225" alt="News Image">
+            <h2>Mass food poisonings cast shadow over Indonesia's free school meals</h2>
+            <p>Nearly 80 students across two high schools fell sick after eating the meals this week.</p>
+            <div class="details">7 hrs ago | Asia</div>
+        </div>
+    </div>
+
+</body>
+</html>
