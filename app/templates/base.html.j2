@@ -1,9 +1,16 @@
-{% extends 'bootstrap/base.html' %}
-
-{% block styles %}
-{{ super() }}
-<!-- Add custom styles here or link to your CSS file -->
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+            BBC News - Home
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    {% block styles %}
     <style>
         /* Basic Reset & Body */
         body {
@@ -402,259 +409,51 @@
             font-size: 0.7em;
         }
     </style>
-{% endblock %}
-
-{% block title %}
-    {% if title %}
-        {{ title }} - BBC News
-    {% else %}
-        BBC News - Home
-    {% endif %}
-{% endblock %}
-
-{% block body %}
-{# Remove default bootstrap navbar block if it exists in base #}
-{# Or ensure the base template doesn't include its own navbar #}
-
-<header>
-     <!-- Top Bar -->
-         <!-- Top Bar -->
+    {% endblock %}
+</head>
+<body>
+    <header>
+        <!-- Top Bar -->
         <div class="bbc-top-bar">
             <div class="top-bar-left">
                 <span class="menu-icon"><i class="fas fa-bars"></i></span>
                 <span class="search-icon"><i class="fas fa-search"></i></span>
             </div>
             <div class="top-bar-center">
-                <a href="/base" id="bbc-logo" title="BBC Home">
+                <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
                     <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" />
                 </a>
             </div>
             <div class="top-bar-right">
-                <a href="/register" class="register-button">Register</a>
-                <a href="https://urban-adventure-jjqj797p9w99fprp9-5000.app.github.dev/login" class="signin-link">Sign In</a>
+                <a href="{{ url_for('register') }}" class="register-button">Register</a>
+                <a href="{{ url_for('login') }}" class="signin-link">Sign In</a>
             </div>
         </div>
 
         <!-- Main Categories Navigation -->
         <nav class="bbc-main-categories">
             <div class="main-categories-nav">
-                <a href="/base" id="cat-home" class="active">Home</a>
-                <a href="/Article" id="cat-article">Article</a>
-                <a href="/weather" id="cat-weather">Weather</a>
-                <a href="/user" id="cat-Comment">Comment</a>
-                
+                <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
+                <a href="{{ url_for('article') }}" id="cat-article" {% if request.path == url_for('article') %}class="active"{% endif %}>Article</a>
+                <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
+                <a href="{{ url_for('Comment') }}" id="cat-Comment" {% if request.path == url_for('Comment') %}class="active"{% endif %}>Comment</a>
             </div>
         </nav>
     </header>
 
-    <!-- START OF MAIN PAGE CONTENT -->
     <main class="page-content">
-        <!-- NEWS LAYOUT GRID -->
-        <div class="news-layout-grid">
+        {% block content %}
+            {# Page-specific content will be inserted here #}
+        {% endblock %}
+    </main>
 
-            <!-- Left Column -->
-            <section class="news-column-left">
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/e798/live/a310bc90-17c3-11f0-8a1e-3ff815141b98.jpg.webp" alt="Shoppers looking concerned" />
-                        <h3>'I can't keep up': Trump's changing tariffs leave shoppers feeling paralysed</h3>
-                    </a>
-                    <p>The rapid change of Trump's tariff policy has shoppers wondering if they should stock up or just wait this out.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-12T20:09:43Z">10 hrs ago</time>
-                        <span class="category">US & Canada</span>
-                    </div>
-                </article>
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/a446/live/a1b0d640-17f6-11f0-a8d5-a3a652ec5dc2.jpg.webp" alt="Placeholder image" />
-                        <h3>Man mistakenly deported to El Salvador 'alive and secure', US says</h3>
-                    </a>
-                    <p>A judge has called for the Trump administration to facilitate the return of Kilmar Abrego Garcia to the US.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-12T18:09:43Z">12 hrs ago</time>
-                        <span class="category">Category</span>
-                    </div>
-                </article>
-            </section>
-
-            <!-- Center Column (Main Story) -->
-            <section class="news-column-center">
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/478d/live/22a84d60-17b5-11f0-9591-1de60ef65af2.jpg.webp" alt="Donald Trump speaking to reporters" />
-                        <h2>Trump exempts smartphones and computers from new tariffs</h2>
-                    </a>
-                    <p>It follows concerns that tech prices could skyrocket, as many gadgets are made in China, with the US president saying he will give more detail on Monday.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-13T04:09:43Z">2 hrs ago</time>
-                        <span class="category">Technology</span>
-                    </div>
-                </article>
-            </section>
-
-            <!-- Right Column -->
-            <section class="news-column-right">
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <h3>Ambassador does not deny Russian attempts to track UK subs</h3>
-                    </a>
-                    <p>Andrei Kelin tells the BBC's Laura Kuenssberg he does not deny accusations of attempting to spy on UK nuclear submarine fleet.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-13T05:09:43Z">1 hrs ago</time>
-                        <span class="category">Middle East</span>
-                    </div>
-                </article>
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <h3>'Russians are even trying to ban our holidays' - life in occupied Ukraine</h3>
-                    </a>
-                    <p>Ukrainians in Russian-held land tell the BBC about the difficulties of life under occupation.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-12T21:09:43Z">9 hrs ago</time>
-                        <span class="category">UK</span>
-                    </div>
-                </article>
-                <article class="news-card">
-                    <a href="javascript:void(0);">
-                        <h3>Indian pot belly: From status symbol to silent killer</h3>
-                    </a>
-                    <p>India’s obesity crisis is surging - and the humble pot belly may be a bigger villain than it seems.</p>
-                    <div class="metadata">
-                        <time datetime="2025-04-12T23:09:43Z">7 hrs ago</time>
-                        <span class="category">Europe</span>
-                    </div>
-                </article>
-            </section>
-
-        </div> <!-- End news-layout-grid -->
-
-        <!-- Film Review Section -->
-        <section class="film-review-section">
-            <div class="film-review-content">
-                <div class="film-review-image">
-                    <img src="https://ichef.bbci.co.uk/images/ic/1920x1080/p0l3mr3n.jpg.webp" alt="Warfare Film Still">
-                </div>
-                <div class="film-review-text">
-                    <div class="news-section"><a href="#">CULTURE > </a></div>
-                    <a href="#"><h3 class="film-review-title">Warfare: 'A bold marvel of a film'</a></h3>
-                    <div class="film-review-stars">★★★★★</div>
-                    <p class="film-review-description">The Ex Machina director's new epic starring Will Poulter and Cosmo Jarvis was co-directed with a former US Navy Seal, and according to BBC Culture it "does what film does best".</p>
-                    <a href="/culture/article/20250410-warfare-review" class="film-review-link">See more</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- News Sections -->
-        <section class="news-sections">
-            <div class="news-sections-grid">
-
-                <!-- US & Canada News -->
-                <div class="news-section">
-                    <a href="#">US & CANADA NEWS ></a>
-                    <div class="news-item">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/a1c6/live/f3ee5e40-1879-11f0-8a1e-3ff815141b98.jpg.webp" alt="Trump in excellent health">
-                        <a href="#"><h3>Trump in excellent health, says White House doctor</a></h3>
-                        <p>Doctors also found Trump has scarring "on the right ear from a gunshot wound", after last July's assassination attempt.</p>
-                        <div class="metadata">3 hrs ago | US & Canada</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>Teen killed parents as part of Trump assassination plot, says FBI</a></h3>
-                        <div class="metadata">6 hrs ago | US & Canada</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>'I can't keep up': Trump's changing tariffs leave shoppers feeling paralysed</a></h3>
-                        <div class="metadata">19 hrs ago | US & Canada</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>Man mistakenly deported to El Salvador 'alive and secure', US says</a></h3>
-                        <div class="metadata">1 day ago | US & Canada</div>
-                    </div>
-                </div>
-
-                <!-- More World News -->
-                <div class="news-section">
-                    <a href="#">MORE WORLD NEWS ></a>
-                    <div class="news-item">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/a817/live/87b50910-18ae-11f0-b1b3-7358f8d35a35.jpg.webp" alt="At least 34 people killed in Sumy">
-                        <a href="#"><h3>At least 34 people killed in Russian ballistic missile attack on Sumy</a></h3>
-                        <p>Photos and videos of the aftermath show bloodied bodies scattered in the streets around the impact of the missiles.</p>
-                        <div class="metadata">8 hrs ago | Europe</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>Gabon coup leader wins election by huge margin</a></h3>
-                        <div class="metadata">9 hrs ago | Africa</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>The Gabon strongman who stormed to election victory</a></h3>
-                        <div class="metadata">10 hrs ago | Africa</div>
-                    </div>
-                     <div class="news-item">
-                        <a href="#"><h3>Severe floods hit Lanzarote after torrential rain</a></h3>
-                        <div class="metadata">11 hrs ago | Europe</div>
-                    </div>
-                </div>
-
-                <!-- Sport -->
-                <div class="news-section">
-                    <a href="#">SPORT ></a>
-                    <div class="news-item">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/d1d7/live/3a8ca5f0-18a2-11f0-a455-cf1d5f751d2f.png.webp" alt="Newcastle win">
-                        <a href="#"><h3>'We had to put a smile on his face' - Newcastle dedicate win to Howe</a></h3>
-                        <p>Newcastle players and staff dedicate their crushing win over Manchester United to boss Eddie Howe, who missed the match as he is in hospital.</p>
-                        <div class="metadata">6 hrs ago | Newcastle</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>'A fascinating contrast between team-mates and title contenders'</a></h3>
-                        <div class="metadata">5 hrs ago | Formula 1</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>Bayindir's failed Man Utd audition offers Onana dilemma</a></h3>
-                        <div class="metadata">6 hrs ago | Man Utd</div>
-                    </div>
-                    <div class="news-item">
-                        <a href="#"><h3>Salah laps up contract acclaim - now Van Dijk may follow 'next week'</a></h3>
-                        <div class="metadata">9 hrs ago | Liverpool</div>
-                    </div>
-                </div>
-
-                <!-- Business -->
-                <div class="news-section">
-                    <a href="#">BUSINESS ></a>
-                    <div class="news-item">
-                        <img src="https://ichef.bbci.co.uk/news/480/cpsprodpb/9f91/live/e1ee6660-1890-11f0-b1b3-7358f8d35a35.jpg.webp" alt="China urges US to cancel tariffs">
-                        <a href="#"><h3>China urges US to 'completely cancel' tariffs</a></h3>
-                        <p>China, which has retaliated with 125% tariffs, called for a "return to the right path of mutual respect".</p>
-                        <div class="metadata">6 hrs ago | World</div>
-                    </div>
-                    <div class="news-item">
-                        <h3>Analysis: Trump's iPhone olive branch is a significant trade war retreat</h3>
-                        <div class="metadata">16 hrs ago | Business</div>
-                    </div>
-                    <div class="news-item">
-                        <h3>UK takes control of British Steel under emergency powers</h3>
-                        <div class="metadata">1 day ago | Politics</div>
-                    </div>
-                    <div class="news-item">
-                        <h3>Chris Mason: British Steel law rushed through Parliament but it is just a stop gap</h3>
-                        <div class="metadata">1 day ago | Politics</div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-    </main> <!-- End page-content -->
-
-    <!-- BBC Footer -->
     <footer class="bbc-footer">
-        <a href="#"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+        <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
         <div class="footer-links">
-            <a href="/base">Home</a>
-            <a href="/Article">Article</a>
-            <a href="/weather">Weather</a>
-            <a href="/user">Comment</a>
-            
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('article') }}">Article</a>
+            <a href="{{ url_for('weather') }}">Weather</a>
+            <a href="{{ url_for('Comment') }}">Comment</a>
         </div>
         <div class="language-select">
             <select>
@@ -664,7 +463,6 @@
                 <option>Spain</option>
             </select>
         </div>
-       
         <div class="footer-links">
             <a href="#">Terms of Use</a>
             <a href="#">About the BBC</a>
@@ -681,7 +479,6 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS and dependencies (optional, if you need Bootstrap functionalities) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -691,11 +488,11 @@
             const navLinks = document.querySelectorAll('.main-categories-nav a');
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === currentPath || (currentPath === '/' && link.id === 'cat-home')) {
-                    // link.classList.add('active');
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
                 }
             });
-            document.getElementById('cat-home')?.classList.add('active');
         });
     </script>
-{% endblock %}
+</body>
+</html>

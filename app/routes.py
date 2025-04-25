@@ -18,6 +18,9 @@ def before_request():
     g.locale = str(get_locale())
 
 
+
+
+
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
@@ -192,36 +195,22 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/world', endpoint='world')
+@app.route('/article', endpoint='article')
 @login_required
-def world():
+def Article():
     # Here you would fetch actual world news articles or data.
-    return render_template('world.html.j2', title=_('World News'))
+    return render_template('Article.html.j2', title=_('Article'))
 
-@app.route('/politics')
+@app.route('/weather')
 @login_required
-def politics():
-    return render_template('politics.html.j2', title='Politics')
+def weather():
+    return render_template('weather.html.j2', title='weather')
 
-@app.route('/business')
+@app.route('/Comment')
 @login_required
-def business():
-    return render_template('business.html.j2', title='Business')
+def Comment():
+    return render_template('Comment', title='Comment')
 
-@app.route('/technology')
-@login_required
-def technology():
-    return render_template('technology.html.j2', title='Technology')
-
-@app.route('/sports')
-@login_required
-def sports():
-    return render_template('sports.html.j2', title='Sports')
-
-@app.route('/entertainment')
-@login_required
-def entertainment():
-    return render_template('entertainment.html.j2', title='Entertainment')
 
 @app.route('/setcookie', methods=['POST', 'GET'])
 def setcookie():
