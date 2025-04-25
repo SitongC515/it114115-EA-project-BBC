@@ -104,19 +104,11 @@
         <img src="https://i0.wp.com/cleanfeed.thetvroom.com/media/2019/08/bbc-logo-correct-001-01.png?resize=800%2C271&ssl=1" width="400" class="d-block mx-auto mb-3"></a>
         
 
-        <form>
-            <form>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password">
-            </div>
-            <button type="submit">login</button>
+        <form method="POST">
+            {{ wtf.quick_form(form) }}
+            
         </form>
-
+    
 
         <p>Sign in and we'll help you discover more things you'll love.</p>
 
