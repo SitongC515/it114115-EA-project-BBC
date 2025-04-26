@@ -1,6 +1,10 @@
-{% extends "base.html.j2" %}
-{% block app_content %}
-    <h1>{{ _('404: Page Not Found') }}</h1>
-    <p>{{ _('Sorry, the page you are looking for does not exist. Please check the URL or return to the homepage.') }}</p>
-    <p><a href="{{ url_for('index') }}">{{ _('Return to Home') }}</a></p>
-{% endblock %}
+<html>
+<head>
+    <title>{{ title }} - Page Not Found</title>
+</head>
+<body>
+    <h1>Error 404 - Page Not Found</h1>
+    <p>Sorry, the page you were looking for could not be found.</p>
+    <a href="/">Go back to the homepage</a>
+</body>
+</html>
