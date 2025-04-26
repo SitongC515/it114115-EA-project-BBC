@@ -221,6 +221,21 @@ def ArticleA():
 def ArticleB():
     return render_template('ArticleB.html.j2', title='ArticleB')
 
+@app.route('/ArticleC')
+@login_required
+def ArticleC():
+    return render_template('ArticleC.html.j2', title='ArticleC')
+
+@app.route('/ArticleD')
+@login_required
+def ArticleD():
+    return render_template('ArticleD.html.j2', title='ArticleD')
+
+@app.route('/ArticleE')
+@login_required
+def ArticleE():
+    return render_template('ArticleE.html.j2', title='ArticleE')
+
 @app.route('/setcookie', methods=['POST', 'GET'])
 def setcookie():
     if request.method == 'POST':
