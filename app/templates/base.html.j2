@@ -435,7 +435,7 @@
         <nav class="bbc-main-categories">
             <div class="main-categories-nav">
                 <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
-                <a href="{{ url_for('article') }}" id="cat-article" {% if request.path == url_for('article') %}class="active"{% endif %}>Article</a>
+                <a href="{{ url_for('Article') }}" id="cat-Article" {% if request.path == url_for('Article') %}class="active"{% endif %}>Article</a>
                 <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
                 <a href="{{ url_for('Comment') }}" id="cat-Comment" {% if request.path == url_for('Comment') %}class="active"{% endif %}>Comment</a>
             </div>
@@ -452,10 +452,11 @@
         <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
         <div class="footer-links">
             <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('article') }}">Article</a>
+            <a href="{{ url_for('Article') }}">Article</a>
             <a href="{{ url_for('weather') }}">Weather</a>
             <a href="{{ url_for('Comment') }}">Comment</a>
         </div>
+
         <div class="language-select">
             <select>
                 <option>BBC in other languages</option>
