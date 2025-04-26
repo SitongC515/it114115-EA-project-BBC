@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BBC Weather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #478fcd;
+            /* Sky Blue Background */
+            color: #fff;
+            line-height: 1.6;
+            overflow: auto;
+            /* Changed from hidden */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header and Navigation */
+        header {
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Semi-transparent white */
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bbc-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 15px;
+            height: 50px;
+            border-bottom: 1px solid #cccccc;
+            background-color: #ffffff;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar-left .menu-icon,
+        .top-bar-left .search-icon {
+            font-size: 1.4em;
+            padding: 0 10px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .top-bar-left .search-icon {
+            margin-left: 5px;
+        }
+
+        .top-bar-center .bbc-logo img {
+            height: 28px;
+            display: block;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .top-bar-right .register-button {
+            background-color: #222222;
+            color: #ffffff;
+            padding: 8px 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 3px;
+            margin-right: 15px;
+        }
+
+        .top-bar-right .register-button:hover {
+            background-color: #444444;
+        }
+
+        .top-bar-right .signin-link {
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #333;
+        }
+
+        .top-bar-right .signin-link:hover {
+            text-decoration: underline;
+        }
+
+        /* --- Main Category Navigation Bar --- */
+        .bbc-main-categories {
+            background-color: #ffffff;
+            border-bottom: 1px solid #cccccc;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .main-categories-nav {
+            display: flex;
+            height: 100%;
+            max-width: 1280px;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .main-categories-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: #333;
+            height: 100%;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+        }
+
+        .main-categories-nav a:hover,
+        .main-categories-nav a.active {
+            border-bottom: 3px solid #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .main-categories-nav a#cat-home.active {
+            border-bottom: 3px solid #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        /* --- Main Content Area --- */
+        .page-content {
+            max-width: 800px;
+            /* Reduced max-width for the comment section */
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+
+        .logo img {
+            height: 30px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 0.9em;
+        }
+
+        /* Main Content */
+        .weather-container {
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .weather-container h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        .weather-container p {
+            font-size: 1em;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            margin-bottom: 30px;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+            font-size: 0.9em;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: #333;
+        }
+
+        .search-bar input[type="text"]::placeholder {
+            color: #666;
+            /* Placeholder text color */
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        /* Globe */
+        .globe {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+            background-image: url('https://static.files.bbci.co.uk/core/website/assets/static/weather/images/maps/international-globe.3a1c1c8d75.png');
+            /* BBC Globe Image */
+            background-size: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* City Markers */
+        .city-marker {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 0.7em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .city-marker:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        /* City Positions (Adjust as needed) */
+        .london {
+            top: 23%;
+            left: 52%;
+            transform: translate(-50%, -50%);
+        }
+
+        .chicago {
+            top: 33%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cape-town {
+            top: 78%;
+            left: 58%;
+            transform: translate(-50%, -50%);
+        }
+
+        .san-jose {
+            top: 45%;
+            left: 10%;
+            transform: translate(-50%, -50%);
+        }
+
+        .brasilia {
+            top: 65%;
+            left: 38%;
+            transform: translate(-50%, -50%);
+        }
+
+        .dakar {
+            top: 55%;
+            left: 45%;
+            transform: translate(-50%, -50%);
+        }
+
+        .tbilisi {
+            top: 40%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+        }
+
+        .mombasa {
+            top: 60%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Detailed Map Link */
+        .detailed-map {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            text-decoration: none;
+        }
+
+        .detailed-map:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            position: relative;
+            /* Changed from absolute */
+            bottom: 0;
+            width: 100%;
+            font-size: 0.8em;
+        }
+
+        /* Video Container Styles */
+        .video-container {
+            max-width: 800px;
+            margin: 400px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            color: #222;
+            /* Dark text color */
+        }
+
+        .video-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .video-thumbnail:hover img {
+            transform: scale(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .video-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .video-thumbnail video {
+            /* Changed img to video */
+            width: 100%;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .video-thumbnail:hover video {
+            /* Changed img to video */
+            transform: scale(1.05);
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-thumbnail:hover .play-button {
+            opacity: 1;
+        }
+
+        .video-info {
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #555;
+        }
+
+        .video-info span {
+            margin-right: 10px;
+        }
+
+        .features-container {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .features-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .features-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .feature-item {
+            width: 220px;
+            /* Fixed width to match the image */
+            box-sizing: border-box;
+        }
+
+        .feature-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .feature-item h3 {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+
+        .feature-item p {
+            font-size: 12px;
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .metadata {
+            font-size: 11px;
+            color: #666;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            .features-grid {
+                flex-direction: column;
+                /* Stack items on smaller screens */
+            }
+
+            .feature-item {
+                width: 100%;
+                /* Full width on smaller screens */
+            }
+        }
+
+        .bbc-footer {
+            background-color: #fff;
+            /* Set background to white */
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            margin: 0 10px;
+            color: #000;
+            /* Adjust link color as needed */
+            text-decoration: none;
+        }
+
+        .language-select {
+            margin-bottom: 10px;
+        }
+
+        .copyright {
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="top-bar-center">
+            <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
+                <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo"
+                    style="height: 120px;" />
+            </a>
+        </div>
+        <!-- Main Categories Navigation -->
+        <nav class="bbc-main-categories">
+            <div class="main-categories-nav">
+                <a href="{{ url_for('index') }}" id="cat-home">Home</a>
+                <a href="{{ url_for('Article') }}" id="cat-Article">Article</a>
+                <a href="{{ url_for('weather') }}" id="cat-weather">Weather</a>
+                <a href="{{ url_for('Comment') }}" id="cat-Comment">Comment</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="weather-container">
+        <h1>Weather forecasts for thousands of locations around the world</h1>
+        <div class="search-bar">
+            <input type="text" placeholder="Enter a city">
+            <button>Search</button>
+        </div>
+
+        <div class="globe">
+            <div class="city-marker london">London <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker chicago">Chicago <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker cape-town">Cape Town <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker san-jose">San José <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker brasilia">Brasilia <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker dakar">Dakar <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker tbilisi">Tbilisi <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+            <div class="city-marker mombasa">Mombasa <img
+                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+                    style="height: 15px; width: 15px;"></div>
+        </div>
+
+
+    </div>
+
+    <div class="video-container">
+        <h2 class="video-title">Forecast for Australasia</h2>
+        <div class="video-thumbnail">
+            <iframe width="700" height="400" src="https://www.youtube.com/embed/QKoW7bhZQLw" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+        </div>
+        <div class="video-info">
+            <span><i class="far fa-clock"></i> 8 hours ago</span>
+            <div class="features-container">
+                <h2 class="features-title">Features</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <img src="https://ichef.bbci.co.uk/ace/standard/220/cpsprodpb/0205/live/1ecca920-21e2-11f0-9060-674316cb3a1f.jpg"
+                            alt="Beach Huts">
+                        <h3>Where it will be warmest next week as UK to bask in mini heatwave</h3>
+                        <p>Temperatures are set to rise next week. Darren Bett and Sarah Keith-Lucas have the details.</p>
+                        <div class="metadata">Weather - 12h</div>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://ichef.bbci.co.uk/ace/standard/220/cpsprodpb/fab9/live/da1370d0-5634-11ef-aebc-6de4d31bf5cd.jpg"
+                            alt="Heatwave Explanation">
+                        <h3>What is a heatwave?</h3>
+                        <p>Just because it's warming up this weekend doesn't mean it's technically going to be a heatwave. Ben Rich
+                            explains the
+                            criteria.</p>
+                        <div class="metadata">Weather - 1d</div>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://ichef.bbci.co.uk/ace/standard/220/cpsprodpb/57a5/live/61ee6450-21f6-11f0-9c65-a5c3dc449bf3.jpg"
+                            alt="Tomasz Schafernaker">
+                        <h3>Watch: How Turner's masterpieces inspired a BBC Weather forecaster</h3>
+                        <p>BBC Weather presenter Tomasz Schafernaker explains how the art master shaped his career.</p>
+                        <div class="metadata">Weather - 11h</div>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://ichef.bbci.co.uk/ace/standard/220/cpsprodpb/3459/live/31d314b0-21f0-11f0-9060-674316cb3a1f.jpg"
+                            alt="Felixstowe Beach">
+                        <h3>Weather for the week ahead</h3>
+                        <p>Will the warm weather we're expecting last until the early May bank holiday? Elizabeth Rizzini has the
+                            latest long range
+                            forecast.</p>
+                        <div class="metadata">Weather - 12h</div>
+                    </div>
+                    <div class="feature-item">
+                        <img src="https://ichef.bbci.co.uk/ace/standard/220/cpsprodpb/7929/live/959a80f0-1b5b-11f0-8f7b-f14ee83762cb.jpg"
+                            alt="Satellite View of Earth">
+                        <h3>Earth Day 2025: Is weather helping the UK harness renewable energy?</h3>
+                        <p>What role does our weather play when it comes to renewable energy?</p>
+                        <div class="metadata">Weather - 3d</div>
+                    </div>
+                </div>
+                <footer class="bbc-footer">
+                    <a href="/index"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png"
+                            alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+                    <div class="footer-links">
+                        <a href="/index">Home</a>
+                        <a href="/Article">Article</a>
+                        <a href="/weather">Weather</a>
+                        <a href="/Comment">Comment</a>
+
+                    </div>
+                    <div class="language-select">
+                        <select>
+                            <option>BBC in other languages</option>
+                            <option>English</option>
+                            <option>Chinese</option>
+                            <option>Spain</option>
+                        </select>
+                    </div>
+
+                    <div class="footer-links">
+                        <a href="#">Terms of Use</a>
+                        <a href="#">About the BBC</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Accessibility Help</a>
+                        <a href="#">Contact the BBC</a>
+                        <a href="#">Advertise with us</a>
+                        <a href="#">Do not share or sell my info</a>
+                        <a href="#">Contact technical support</a>
+                    </div>
+                    <div class="copyright">
+                        Copyright 2025 BBC. All rights reserved. The BBC is not responsible for the content of external
+                        sites. <a href="#">Read about our approach to external linking.</a>
+                    </div>
+                </footer>
+
+                <!-- Bootstrap JS and dependencies (optional, if you need Bootstrap functionalities) -->
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const currentPath = window.location.pathname;
+                        const navLinks = document.querySelectorAll('.main-categories-nav a');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === currentPath || (currentPath === '/' && link.id ===
+                                    'cat-home')) {
+                                // link.classList.add('active');
+                            }
+                        });
+                        document.getElementById('cat-home')?.classList.add('active');
+                    });
+                </script>
+
+
+</body>
+
+</html>
