@@ -195,7 +195,7 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/article', endpoint='article')
+@app.route('/Article', endpoint='Article')
 @login_required
 def Article():
     # Here you would fetch actual world news articles or data.
