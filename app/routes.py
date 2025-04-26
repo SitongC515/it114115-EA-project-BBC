@@ -245,6 +245,10 @@ def ArticleF():
 def page_not_found(e):  
     return render_template('404.html.j2', title='404'), 404
 
+@app.errorhandler(500)
+def page_not_found(e):  
+    return render_template('500.html.j2', title='500'), 500
+
 @app.route('/setcookie', methods=['POST', 'GET'])
 def setcookie():
     if request.method == 'POST':
