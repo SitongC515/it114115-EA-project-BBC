@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trump on Russian Strikes</title>
+    <style>
+        /* General Styles (Based on the BBC screenshot) */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Closest match to BBC font */
+            margin: 0;
+            padding: 0;
+            background-color: #fff; /* White background */
+            color: #0a0a0a; /* Very dark gray, almost black, for text */
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header and Navigation (BBC Style) */
+        header {
+            background-color: #fff;
+            padding: 0; /* Remove padding from header */
+            border-bottom: 1px solid #e0e0e0; /* Light gray border */
+        }
+
+         .bbc-top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 15px;
+        height: 50px;
+        border-bottom: 1px solid #cccccc;
+        background-color: #ffffff;
+    }
+
+    .top-bar-center {
+        display: flex;
+        justify-content: center; 
+        align-items: center;    
+        width: 100%;             
+    }
+
+    .top-bar-center .bbc-logo img {
+        height: 80px; 
+        display: block;
+    }
+
+    /* --- Main Category Navigation Bar --- */
+    .bbc-main-categories {
+        background-color: #ffffff;
+        border-bottom: 1px solid #cccccc;
+        height: 45px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main-categories-nav {
+        display: flex;
+        height: 100%;
+        max-width: 1280px;
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .main-categories-nav a {
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        font-weight: bold;
+        font-size: 0.9em;
+        color: #333;
+        height: 100%;
+        border-bottom: 3px solid transparent;
+        white-space: nowrap;
+    }
+
+    .main-categories-nav a:hover,
+    .main-categories-nav a.active {
+        border-bottom: 3px solid #1a1a1a;
+        color: #1a1a1a;
+    }
+
+    /* --- Main Content Area --- */
+    .article {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .article img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+    }
+    
+        .source {
+            font-size: 0.75em;
+            color: #555;
+            font-style: normal; /* Remove italic */
+        }
+
+        .content {
+            margin-top: 10px;
+            font-size: 0.9em; /* Reduced font size */
+            line-height: 1.6;
+        }
+
+        .content p {
+            margin-bottom: 8px;
+        }
+
+        .timestamp {
+            font-size: 0.75em;
+            color: #555;
+            margin: 5px 0;
+        }
+
+        /* Related Articles */
+        .related-articles {
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 0; /* Remove padding */
+            background-color: transparent; /* Transparent background */
+            border-top: 1px solid #e0e0e0; /* Add top border */
+            overflow: hidden;
+        }
+
+        .related-articles h4 {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            color: #0a0a0a;
+        }
+
+        .related-articles p {
+            margin: 3px 0;
+            font-weight: normal; /* Remove bold */
+            float: left;
+            width: 48%;
+            margin-right: 2%;
+        }
+
+        /* Tags */
+        .tags {
+            margin-top: 10px;
+            font-size: 0.75em;
+            color: #555;
+        }
+
+        .tags span {
+            display: inline-block;
+            margin: 3px;
+            padding: 3px 6px;
+            background-color: #f0f0f0;
+            border-radius: 2px;
+        }
+         .bbc-footer {
+
+margin-top: 20px;
+
+border-top: 1px solid #ccc;
+
+padding-top: 20px;
+
+text-align: center;
+
+font-size: 0.8em;
+
+color: #5a5a5a;
+
+}
+
+.footer-links {
+
+margin-bottom: 10px;
+
+}
+
+.footer-links a {
+
+margin: 0 5px;
+
+}
+
+.language-select {
+
+margin-bottom: 10px;
+
+}
+
+.social-links {
+
+margin-bottom: 10px;
+
+}
+
+.social-links a {
+
+margin: 0 5px;
+
+}
+
+.copyright {
+
+font-size: 0.7em;
+
+}
+    </style>
+</head>
+<body>
+    <header>
+        <header>
+        <div class="top-bar-center">
+                <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
+                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 130px;"/>
+                </a>
+               
+            </div> 
+            
+        </div>
+    </header>
+
+     <nav class="bbc-main-categories">
+        <div class="main-categories-nav">
+            <a href="/index" id="cat-home" class="active">Home</a>
+            <a href="/Article" id="cat-article">Article</a>
+            <a href="/weather" id="cat-weather">Weather</a>
+            <a href="/user" id="cat-Comment">Comment</a>
+            
+        </div>
+    </nav>
+</header>
+   
+
+    <div class="article">
+        <h1>When is Sean 'Diddy' Combs' trial and what is he charged with?</h1>
+        <p class="timestamp">14 hours ago</p>
+        <p><strong>Brandon Drenon</strong></p>
+        <p class="source">BBC News</p>
+        <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/d644/live/54998d70-865b-11ef-beac-1d00347925c8.jpg.webp" alt="Daddy">
+        <div class="content">
+            <p>Sean "Diddy" Combs, one of the most successful rappers and music moguls in the US, is due to go on trial on 5 May.</p>
+            <p>The charges against him include racketeering conspiracy, sex trafficking, and transportation to engage in prostitution. If convicted, he could face life in prison.</p>
+            <p>The rapper also faces dozens of lawsuits from individuals who accuse him of using his power to drug, assault, rape, intimidate and silence people.</p>
+            <p>Mr Combs has pleaded not guilty to the criminal charges and rejected the individual lawsuits as attempts "for a quick payday".</p>
+            <h2 class="article-subtitle">What are the charges and allegations against Diddy?</h2>
+            <p>In the federal criminal case, Mr Combs is charged with racketeering conspiracy, two charges of sex trafficking and two charges of transportation to engage in prostitution.</p>
+            <p>Many of the most severe allegations relate to the racketeering conspiracy charge.</p> 
+            <p>In 2023, he released his fifth record The Love Album: Off The Grid and earned his first solo nomination at the Grammy awards. He also was named a Global Icon at the MTV Awards.</p>
+            <p>Mr Combs' legal team dismissed the flurry of lawsuits as "clear attempts to garner publicity."</p>
+            <h2 class="article-subtitle">When is the Diddy trial and how long will it last?</h2>
+            <p>In the federal criminal case, Mr Combs is charged with racketeering conspiracy, two charges of sex trafficking and two charges of transportation to engage in prostitution.</p>
+            <p>Many of the most severe allegations relate to the racketeering conspiracy charge.</p>
+            <p>In 2023, he released his fifth record The Love Album: Off The Grid and earned his first solo nomination at the Grammy awards. He also was named a Global Icon at the MTV Awards.</p>
+            <p>Mr Combs' legal team dismissed the flurry of lawsuits as "clear attempts to garner publicity."</p>
+        </div>
+    </div>
+
+    <div class="related-articles">
+        <h4>Related Articles</h4>
+        <p>'Callous' man jailed for raping vulnerable woman</p>
+        <p>Police failings left predator free to kidnap girl</p>
+        <div class="tags">
+            <strong>Tags:</strong>
+            <span>Sexual violence</span>
+            <span>Sean ‘Diddy’ Combs</span>
+            <span>Music</span>
+            <span>United States</span>
+        </div>
+         <footer class="bbc-footer">
+    <a href="/index"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+    <div class="footer-links">
+        <a href="/base">Home</a>
+        <a href="/Article">Article</a>
+        <a href="/weather">Weather</a>
+        <a href="/user">Comment</a>
+        
+    </div>
+    <div class="language-select">
+        <select>
+            <option>BBC in other languages</option>
+            <option>English</option>
+            <option>Chinese</option>
+            <option>Spain</option>
+        </select>
+    </div>
+   
+    <div class="footer-links">
+        <a href="#">Terms of Use</a>
+        <a href="#">About the BBC</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Cookies</a>
+        <a href="#">Accessibility Help</a>
+        <a href="#">Contact the BBC</a>
+        <a href="#">Advertise with us</a>
+        <a href="#">Do not share or sell my info</a>
+        <a href="#">Contact technical support</a>
+    </div>
+    <div class="copyright">
+        Copyright 2025 BBC. All rights reserved. The BBC is not responsible for the content of external sites. <a href="#">Read about our approach to external linking.</a>
+    </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies (optional, if you need Bootstrap functionalities) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.main-categories-nav a');
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === currentPath || (currentPath === '/' && link.id === 'cat-home')) {
+                // link.classList.add('active');
+            }
+        });
+        document.getElementById('cat-home')?.classList.add('active');
+    });
+</script>
+
+    </div>
+</body>
+</html>

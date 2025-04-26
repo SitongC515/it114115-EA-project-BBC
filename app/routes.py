@@ -216,6 +216,11 @@ def Comment():
 def ArticleA():
     return render_template('ArticleA.html.j2', title='ArticleA')
 
+@app.route('/ArticleB')
+@login_required
+def ArticleB():
+    return render_template('ArticleB.html.j2', title='ArticleB')
+
 @app.route('/setcookie', methods=['POST', 'GET'])
 def setcookie():
     if request.method == 'POST':
