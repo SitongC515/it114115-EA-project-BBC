@@ -216,27 +216,32 @@ font-size: 0.7em;
 </head>
 <body>
     <header>
-        <header>
-        <div class="top-bar-center">
+        <!-- Top Bar -->
+        <div class="bbc-top-bar">
+            <div class="top-bar-left">
+                <span class="menu-icon"><i class="fas fa-bars"></i></span>
+                <span class="search-icon"><i class="fas fa-search"></i></span>
+            </div>
+            <div class="top-bar-center">
                 <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 130px;"/>
+                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px;"/>
                 </a>
-               
-            </div> 
-            
+            </div>
+            <div class="top-bar-right">
+                <a href="{{ url_for('logout') }}" class="logout-link">logout</a>
+            </div>
         </div>
-    </header>
 
-     <nav class="bbc-main-categories">
-        <div class="main-categories-nav">
-            <a href="/index" id="cat-home" class="active">Home</a>
-            <a href="/Article" id="cat-article">Article</a>
-            <a href="/weather" id="cat-weather">Weather</a>
-            <a href="/user" id="cat-Comment">Comment</a>
-            
-        </div>
-    </nav>
-</header>
+        <!-- Main Categories Navigation -->
+        <nav class="bbc-main-categories">
+            <div class="main-categories-nav">
+                <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
+                <a href="{{ url_for('Article') }}" id="cat-Article" {% if request.path == url_for('Article') %}class="active"{% endif %}>Article</a>
+                <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
+                <a href="{{ url_for('Comment') }}" id="cat-Comment" {% if request.path == url_for('Comment') %}class="active"{% endif %}>Comment</a>
+            </div>
+        </nav>
+    </header>
    
 
     <div class="article">
@@ -274,7 +279,7 @@ font-size: 0.7em;
             <span>Asia</span>
             <span>Indonesia</span>
         </div>
-        
+
          <footer class="bbc-footer">
     <a href="/index"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
     <div class="footer-links">
