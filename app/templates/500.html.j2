@@ -1,7 +1,107 @@
-{% extends "base.html" %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Internal Error</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center content horizontally */
+        }
 
-{% block app_content %}
-    <h1>{{ _('Oops! An Unexpected Error Has Occurred') }}</h1>
-    <p>{{ _('The BBC News team has been notified. We apologize for the inconvenience.') }}</p>
-    <p><a href="{{ url_for('index') }}">{{ _('Return to Home') }}</a></p>
-{% endblock %}
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Reset text alignment for the container */
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            padding-left: 0;
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .options {
+            margin-top: 30px;
+        }
+
+        .options a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .options a:hover {
+            text-decoration: underline;
+        }
+
+        .image-container {
+            float: right; /* Float the image to the right */
+            width: 200px; /* Adjust as needed */
+            margin-left: 20px; /* Add some space between text and image */
+        }
+
+        .image-container img {
+            max-width: 100%; /* Make the image responsive */
+            height: auto;
+            border-radius: 50%; /* Make the image circular */
+        }
+
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both; /* Clear the float */
+        }
+    </style>
+</head>
+<body>
+    <div class="container clearfix">
+        <h1>Error 500 - Internal Error</h1>
+
+        <div class="image-container">
+            <img src="https://t3.ftcdn.net/jpg/06/47/94/56/240_F_647945633_xnOn2KR5hnhAFOANQIv95N1z33dHLDih.jpg" alt="500 Image">
+        </div>
+
+        <p>This might be because:</p>
+        <ul>
+            <li>We are experiencing abnormal traffic to our network, or</li>
+            <li>The service or servers it is on is not currently available.</li>
+        </ul>
+
+        <div class="options">
+            <p>Please try the following options instead:</p>
+            <ul>
+                <li>Try again later once we have solved the problem.</li>
+                <li>Use our <a href="/">site index</a>.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
