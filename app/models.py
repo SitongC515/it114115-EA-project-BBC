@@ -90,3 +90,33 @@ class Post(db.Model):
 
     def __repr__(self) -> str:
         return f'<Post {self.body}>'
+    
+class Article(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comment', backref='article', lazy=True)
+
+    def __repr__(self):
+        return f"Article('{self.title}', '{self.date_posted}')"
+    
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+
+class WeatherData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    city = db.Column(db.String(64), index=True)  # e.g., "London"
+    date = db.Column(db.DateTime, index=True, default=datetime.utcnow) # Date of the forecast
+    today_temperature_high = db.Column(db.Integer)
+    today_temperature_low = db.Column(db.Integer)
+    today_description = db.Column(db.String(128))
+    today_icon = db.Column(db.String(256))
+
+    def __repr__(self):
+        return f"WeatherData('{self.city}', '{self.date}', '{self.today_temperature_high}', '{self.today_temperature_low}', '{self.today_description}')"
