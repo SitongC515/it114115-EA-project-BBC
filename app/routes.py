@@ -81,7 +81,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('index'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -232,6 +232,7 @@ def init_db():
                 today_icon="https://png.pngtree.com/png-vector/20190214/ourmid/pngtree-vector-cloudy-icon-png-image_450295.jpg"
             )
             db.session.add(sample_weather)
+            
             sample_weather2 = WeatherData(
                 city="Chicago",
                 date=datetime.utcnow(),
@@ -241,6 +242,46 @@ def init_db():
                 today_icon="https://cdn-icons-png.flaticon.com/128/697/697982.png"
             )
             db.session.add(sample_weather2)
+            
+            sample_weather3 = WeatherData(
+                city="San Jose",
+                date=datetime.utcnow(),
+                today_temperature_high=28,
+                today_temperature_low=20,
+                today_description="Clear",
+                today_icon="https://cdn-icons-png.flaticon.com/512/3222/3222807.png"
+            )
+            db.session.add(sample_weather3)
+            
+            sample_weather4 = WeatherData(
+                city="Tbilisi",
+                date=datetime.utcnow(),
+                today_temperature_high=30,
+                today_temperature_low=22,
+                today_description="Sunny",
+                today_icon="https://cdn-icons-png.flaticon.com/128/697/697982.png"
+            )
+            db.session.add(sample_weather4)
+            
+            sample_weather5 = WeatherData(
+                city="Dakar",
+                date=datetime.utcnow(),
+                today_temperature_high=32,
+                today_temperature_low=26,
+                today_description="Hot",
+                today_icon="https://cdn-icons-png.flaticon.com/512/8371/8371981.png"
+            )
+            db.session.add(sample_weather5)
+            
+            sample_weather6 = WeatherData(
+                city="Mombasa",
+                date=datetime.utcnow(),
+                today_temperature_high=31,
+                today_temperature_low=25,
+                today_description="Humid",
+                today_icon="https://e7.pngegg.com/pngimages/314/726/png-clipart-moisture-computer-icons-humidity-others-desktop-wallpaper-weather-icon-thumbnail.png"
+            )
+            db.session.add(sample_weather6)
             db.session.commit()
         return "Database initialized with sample data!"
 
