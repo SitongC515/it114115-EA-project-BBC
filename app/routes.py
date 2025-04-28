@@ -6,7 +6,6 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, Post
 from app.email import send_password_reset_email
 
 
@@ -271,3 +270,4 @@ def getcookie():
     <h1>secureUserID: {secureUserID}</h1>
     <h1>httpOnlyUserID: {httpOnlyUserID}</h1>
     """
+

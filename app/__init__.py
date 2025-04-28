@@ -1,3 +1,4 @@
+# app/__init__.py
 import logging
 from logging.handlers import RotatingFileHandler, SMTPHandler
 import os
@@ -11,7 +12,6 @@ from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel
 
-
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
@@ -23,6 +23,16 @@ mail = Mail(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
 babel = Babel(app)
+
+
+from app import models
+
+from flask_login import UserMixin  
+
+
+@login.user_loader
+def load_user(id):
+    return models.User.query.get(int(id))
 
 if not app.debug:
     root = logging.getLogger()
@@ -56,5 +66,13 @@ if not app.debug:
 def get_locale():
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
-# You must keep the routes at the end.
+
+with app.app_context():
+    db.create_all()
+
+
+# @login.user_loader  
+def load_user(id):
+    return User.query.get(int(id))
+
 from app import routes, errors

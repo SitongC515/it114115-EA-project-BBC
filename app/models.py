@@ -1,13 +1,15 @@
 
 from datetime import datetime, timedelta, timezone
 from hashlib import md5
-from app import app, db, login
 import jwt
 
 from flask_login import UserMixin
 
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_sqlalchemy import SQLAlchemy  
+from flask_login import LoginManager
 
+from app import db
 
 followers = db.Table(
     'followers',
@@ -15,13 +17,40 @@ followers = db.Table(
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+assoc_user_role = db.Table(
+    'ab_user_role', db.Model.metadata,  # use db.Model.metadata
+    db.Column('id', db.Integer, primary_key=True), 
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+    db.UniqueConstraint('user_id', 'role_id')  
+)
+
+
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    users = db.relationship('User', secondary=assoc_user_role, backref='roles', lazy='dynamic')
+
+    def __repr__(self):
+        return f"<Role(name='{self.name}')>"
+    
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.String(140))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    author = db.relationship('User', backref=db.backref('my_posts', lazy='dynamic'))  # 修复 backref
+
+    def __repr__(self) -> str:
+        return f'<Post {self.body}>'
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    posts = db.relationship('Post', backref='author', lazy='dynamic')
     about_me = db.Column(db.String(140))
     last_seen = db.Column(db.DateTime, default=datetime.utcnow)
     followed = db.relationship(
@@ -72,51 +101,7 @@ class User(UserMixin, db.Model):
         try:
             id = jwt.decode(token, app.config["SECRET_KEY"], algorithms="HS256")[
                 "reset_password"]
-        except:           
+        except:
             return None
         return User.query.get(id)
 
-
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
-
-
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-    def __repr__(self) -> str:
-        return f'<Post {self.body}>'
-    
-class Article(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    comments = db.relationship('Comment', backref='article', lazy=True)
-
-    def __repr__(self):
-        return f"Article('{self.title}', '{self.date_posted}')"
-    
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
-
-class WeatherData(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    city = db.Column(db.String(64), index=True)  # e.g., "London"
-    date = db.Column(db.DateTime, index=True, default=datetime.utcnow) # Date of the forecast
-    today_temperature_high = db.Column(db.Integer)
-    today_temperature_low = db.Column(db.Integer)
-    today_description = db.Column(db.String(128))
-    today_icon = db.Column(db.String(256))
-
-    def __repr__(self):
-        return f"WeatherData('{self.city}', '{self.date}', '{self.today_temperature_high}', '{self.today_temperature_low}', '{self.today_description}')"
