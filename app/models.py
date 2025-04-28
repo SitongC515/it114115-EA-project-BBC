@@ -121,3 +121,48 @@ class WeatherData(db.Model):
 
     def __repr__(self):
         return f"WeatherData('{self.city}', '{self.date}', '{self.today_temperature_high}', '{self.today_temperature_low}', '{self.today_description}')"
+    
+class Menu(db.Model):
+    __tablename__ = "menu"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    url = db.Column(db.String(256))
+    icon = db.Column(db.String(64))
+    parent_id = db.Column(db.Integer, db.ForeignKey('menu.id'))
+    order = db.Column(db.Integer, default=0) 
+    is_visible = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    children = db.relationship('Menu', backref=db.backref('parent', remote_side=[id]))
+    
+    def __repr__(self):
+        return f"Menu('{self.name}')"
+
+class Category(db.Model):
+    __tablename__ = "category"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.String(256))
+    parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    children = db.relationship('Category', backref=db.backref('parent', remote_side=[id]))
+    
+    def __repr__(self):
+        return f"Category('{self.name}')"
+
+class ArticleCategory(db.Model):
+    __tablename__ = "article_category"
+    
+    id = db.Column(db.Integer, primary_key=True)
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    article = db.relationship('Article', backref=db.backref('article_categories', lazy=True))
+    category = db.relationship('Category', backref=db.backref('article_categories', lazy=True))
+    
+    def __repr__(self):
+        return f"ArticleCategory(article_id={self.article_id}, category_id={self.category_id})"
