@@ -6,7 +6,9 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm
+from app.models import User, Post
 from app.email import send_password_reset_email
+from app.models import WeatherData
 
 
 @app.before_request
@@ -201,9 +203,60 @@ def Article():
     return render_template('Article.html.j2', title=_('Article'))
 
 @app.route('/weather')
-@login_required
 def weather():
-    return render_template('weather.html.j2', title='weather')
+    city_query = request.args.get('city')
+    
+    if city_query:
+        # Search for specific city
+        weather_data = WeatherData.query.filter(WeatherData.city.ilike(f'%{city_query}%')).all()
+    else:
+        # Get all weather data
+        weather_data = WeatherData.query.all()
+    
+    return render_template('weather.html.j2', weather_data=weather_data)
+
+
+
+@app.route('/init_db')  # Create a separate route for initialization
+def init_db():
+    with app.app_context():
+        db.create_all()  # Create tables
+
+        if not WeatherData.query.first():
+            sample_weather = WeatherData(
+                city="London",
+                date=datetime.utcnow(),
+                today_temperature_high=15,
+                today_temperature_low=5,
+                today_description="Cloudy",
+                today_icon="https://png.pngtree.com/png-vector/20190214/ourmid/pngtree-vector-cloudy-icon-png-image_450295.jpg"
+            )
+            db.session.add(sample_weather)
+            sample_weather2 = WeatherData(
+                city="Chicago",
+                date=datetime.utcnow(),
+                today_temperature_high=20,
+                today_temperature_low=10,
+                today_description="Sunny",
+                today_icon="https://cdn-icons-png.flaticon.com/128/697/697982.png"
+            )
+            db.session.add(sample_weather2)
+            db.session.commit()
+        return "Database initialized with sample data!"
+
+@app.before_first_request
+def create_tables():
+    db.create_all()
+    sample_weather = [
+    {"city": "London", "high": 18, "low": 12, "description": "Partly Cloudy", "icon": "partly_cloudy"},
+    {"city": "Chicago", "high": 25, "low": 18, "description": "Sunny", "icon": "sunny"},
+    {"city": "San Jose", "high": 28, "low": 20, "description": "Clear", "icon": "clear"},
+    {"city": "Tbilisi", "high": 30, "low": 22, "description": "Sunny", "icon": "sunny"},
+    {"city": "Dakar", "high": 32, "low": 26, "description": "Hot", "icon": "hot"},
+    {"city": "Mombasa", "high": 31, "low": 25, "description": "Humid", "icon": "humid"},
+    {"city": "Brasilia", "high": 27, "low": 19, "description": "Partly Cloudy", "icon": "partly_cloudy"},
+    {"city": "Cape Town", "high": 23, "low": 15, "description": "Windy", "icon": "windy"}
+]
 
 @app.route('/Comment')
 @login_required
@@ -270,4 +323,3 @@ def getcookie():
     <h1>secureUserID: {secureUserID}</h1>
     <h1>httpOnlyUserID: {httpOnlyUserID}</h1>
     """
-

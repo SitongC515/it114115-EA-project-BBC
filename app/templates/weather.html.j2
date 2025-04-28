@@ -1,6 +1,4 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -508,6 +506,32 @@
             font-size: 0.8em;
             color: #666;
         }
+
+        .weather-table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.1);
+            /* Semi-transparent white */
+        }
+
+        .weather-table th,
+        .weather-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            /* Faint white border */
+        }
+
+        .weather-table th {
+            font-weight: bold;
+            color: #ddd;
+            /* Slightly lighter text for headers */
+        }
+
+        .weather-table tr:last-child td {
+            border-bottom: none;
+        }
     </style>
 </head>
 
@@ -533,8 +557,10 @@
     <div class="weather-container">
         <h1>Weather forecasts for thousands of locations around the world</h1>
         <div class="search-bar">
-            <input type="text" placeholder="Enter a city">
-            <button>Search</button>
+            <form action="{{ url_for('weather') }}" method="GET">
+                <input type="text" name="city" placeholder="Enter a city">
+                <button type="submit">Search</button>
+            </form>
         </div>
 
         <div class="globe">
@@ -564,6 +590,35 @@
                     style="height: 15px; width: 15px;"></div>
         </div>
 
+        <!-- Display weather data from the database -->
+        <table class="weather-table">
+            <thead>
+                <tr>
+                    <th>City</th>
+                    <th>Date</th>
+                    <th>High Temp</th>
+                    <th>Low Temp</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if weather_data %}
+                    {% for weather in weather_data %}
+                    <tr>
+                        <td>{{ weather.city }}</td>
+                        <td>{{ weather.date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                        <td>{{ weather.today_temperature_high }}°C</td>
+                        <td>{{ weather.today_temperature_low }}°C</td>
+                        <td>{{ weather.today_description }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="5">No weather data available. Please create the database tables first.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
 
     </div>
 
@@ -670,11 +725,9 @@
                                 // link.classList.add('active');
                             }
                         });
-                        document.getElementById('cat-home')?.classList.add('active');
+                        // Highlight weather tab since we're on the weather page
+                        document.getElementById('cat-weather')?.classList.add('active');
                     });
                 </script>
-
-
 </body>
-
-</html>
+</html>''')
