@@ -15,7 +15,22 @@ followers = db.Table(
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
+assoc_user_role = db.Table(
+    'ab_user_role', db.Model.metadata,  # use db.Model.metadata
+    db.Column('id', db.Integer, primary_key=True),  
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
+    db.UniqueConstraint('user_id', 'role_id')  
+)
 
+class Role(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    users = db.relationship('User', secondary=assoc_user_role, backref='roles', lazy='dynamic')
+
+    def __repr__(self):
+        return f"<Role(name='{self.name}')>"
+    
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
