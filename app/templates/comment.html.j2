@@ -230,6 +230,37 @@
         .icon {
             display: inline-block;
         }
+
+        /* Alert message styling */
+        .alert {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-color: #ffeeba;
+            color: #856404;
+        }
+
+        .alert-info {
+            background-color: #d1ecf1;
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
     </style>
     {% endblock %}
 </head>
@@ -263,30 +294,56 @@
     </header>
 
     <main class="page-content">
-        {% block content %}
+        
             <div class="comment-section">
                 <h2>Comments</h2>
                 <p>You are signed in.</p>
-                <a href="#">View your previous comments</a>
 
                 <form method="post" action="{{ url_for('comment') }}">
-                    <textarea name="comment" placeholder="Add your comment..."></textarea>
-                    <button type="submit">Post comment</button>
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        <label for="comment">Add your comment:</label>
+                        {{ form.comment(class="form-control", placeholder="Add your comment...") }}
+                         {% if form.comment.errors %}
+                            <ul class="errors">
+                                {% for error in form.comment.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Post comment</button>
                 </form>
 
                 <p class="house-rules">All posts are reactively-moderated and must obey the house rules.</p>
-                <a href="#">View all (316)</a>
+                <a href="{{ url_for('comment') }}">View all ({{ comments|length }})</a>
                 <br>
                 Latest first
-            </div>
 
-            {% for comment in comments %}
-                <div class="comment-section">
-                    <p>{{ comment.text }}</p>
-                    <p>Posted by: {{ comment.author.username }} on {{ comment.date_posted }}</p>
-                </div>
-            {% endfor %}
-        {% endblock %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <h2>Comments:</h2>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ comment.user.username }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ comment.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</h6>
+                                <p class="card-text">{{ comment.text }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endif %}
+            </div>
+        
     </main>
 
     <footer class="bbc-footer">

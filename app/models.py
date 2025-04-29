@@ -1,11 +1,11 @@
-
 from datetime import datetime, timedelta, timezone
 from hashlib import md5
 from app import app, db, login
 import jwt
 from sqlalchemy import Column, Integer, String, DateTime
 from flask_login import UserMixin
-
+from alembic import op
+import sqlalchemy as sa
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -110,21 +110,20 @@ class Article(db.Model):
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    comments = db.relationship('Comment', backref='article', lazy=True)
-
+    
     def __repr__(self):
         return f"Article('{self.title}', '{self.date_posted}')"
     
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    text = db.Column(db.String(255), nullable=False)
+    date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+    user = db.relationship('User', backref='comments')
 
     def __repr__(self):
         return f"Comment('{self.text}', '{self.date_posted}')"
-
+    
 class WeatherData(db.Model):
     __tablename__ = "weather_data"  # Define the table name!
 

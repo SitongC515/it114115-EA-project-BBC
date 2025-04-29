@@ -6,7 +6,6 @@ from logging.config import fileConfig
 from flask import current_app
 
 from alembic import context
-from app.models import *
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -19,8 +18,8 @@ logger = logging.getLogger('alembic.env')
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-
-# target_metadata = models.Base.metadata
+# from myapp import mymodel
+# target_metadata = mymodel.Base.metadata
 config.set_main_option(
     'sqlalchemy.url',
     str(current_app.extensions['migrate'].db.get_engine().url).replace(

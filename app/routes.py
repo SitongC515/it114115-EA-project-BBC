@@ -1,15 +1,17 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g
+from flask import render_template, flash, redirect, url_for, request, g, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, Post,Comment
+    ResetPasswordRequestForm, ResetPasswordForm,CommentForm
+from app.models import User, Post, Comment, Article
 from app.email import send_password_reset_email
 from app.models import WeatherData
-
+from wtforms.validators import DataRequired
+from flask_wtf.csrf import CSRFProtect
+from wtforms import TextAreaField, SubmitField
 
 @app.before_request
 def before_request():
@@ -196,9 +198,9 @@ def unfollow(username):
     flash(_('You are not following %(username)s.', username=username))
     return redirect(url_for('user', username=username))
 
-@app.route('/Article', endpoint='Article')
+@app.route('/article', endpoint='Article')
 @login_required
-def Article():
+def article():
     # Here you would fetch actual world news articles or data.
     return render_template('Article.html.j2', title=_('Article'))
 
@@ -299,20 +301,27 @@ def create_tables():
     {"city": "Cape Town", "high": 23, "low": 15, "description": "Windy", "icon": "windy"}
 ]
 
-@app.route("/comment", methods=['GET', 'POST'])
-def comment():  # View function name is 'comment' (lowercase)
-    if request.method == 'POST':
-        comment_text = request.form['comment']
-        user = User.query.first()
-        article = Article.query.first()
 
-        comment_obj = Comment(text=comment_text, author=user, article=article)
-        db.session.add(comment_obj)
-        db.session.commit()
-        return redirect(url_for('comment'))  # Use 'comment' here
+@app.route('/comment', methods=['GET', 'POST'])
+@login_required
+def comment():
+    form = CommentForm()
+    comments = Comment.query.order_by(Comment.date_posted.desc()).all()
 
-    comments = Comment.query.all()
-    return render_template('comment.html.j2', comments=comments, current_user=User.query.first())
+    if form.validate_on_submit():
+        text = form.comment.data
+        try:
+            new_comment = Comment(text=text, user_id=current_user.id)
+            db.session.add(new_comment)
+            db.session.commit()
+            flash('Your comment has been posted!', 'success')
+            return redirect(url_for('comment'))
+        except Exception as e:
+            db.session.rollback()
+            flash('An error occurred while posting your comment. Please try again.', 'danger')
+            return render_template('comment.html.j2', comments=comments, form=form, title='Comments')
+
+    return render_template('comment.html.j2', comments=comments, form=form, title='Comments')
 
 @app.route('/ArticleA')
 @login_required
