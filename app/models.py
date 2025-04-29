@@ -181,3 +181,28 @@ class ArticleCategory(db.Model):
     
     def __repr__(self):
         return f"ArticleCategory(article_id={self.article_id}, category_id={self.category_id})"
+
+
+class Permission(db.Model):
+    __tablename__ = "permission"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140), unique=True, nullable=False)
+    password = db.Column(db.String(30))
+
+
+class ViewMenu(db.Model):
+    __tablename__ = 'view_menu'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140), unique=True, nullable=False)
+    
+
+class PermissionView(db.Model):
+    __tablename__ = 'permission_view'
+
+    id = db.Column(db.Integer, primary_key=True)
+    permission_id = db.Column(db.Integer, db.ForeignKey('permission.id'))
+    permission = db.relationship("Permission")
+    view_menu_id = db.Column(db.Integer, db.ForeignKey('view_menu.id'))
+    view_menu = db.relationship("ViewMenu")
