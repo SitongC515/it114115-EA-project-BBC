@@ -146,11 +146,12 @@ class Menu(db.Model):
     url = db.Column(db.String(256))
     icon = db.Column(db.String(64))
     parent_id = db.Column(db.Integer, db.ForeignKey('menu.id'))
-    order = db.Column(db.Integer, default=0) 
+    order = db.Column(db.Integer, default=0)
     is_visible = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     
     children = db.relationship('Menu', backref=db.backref('parent', remote_side=[id]))
+    category = db.relationship('Category', backref='menu', lazy=True)
     
     def __repr__(self):
         return f"Menu('{self.name}')"
@@ -163,8 +164,12 @@ class Category(db.Model):
     description = db.Column(db.String(256))
     parent_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    menu_id = db.Column(db.Integer, db.ForeignKey('menu.id')) 
 
     children = db.relationship('Category', backref=db.backref('parent', remote_side=[id]))
+    articles = db.relationship('Article', secondary='article_category',
+                             backref=db.backref('categories', lazy='dynamic'),
+                             lazy='dynamic')
     
     def __repr__(self):
         return f"Category('{self.name}')"
