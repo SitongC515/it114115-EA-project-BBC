@@ -257,7 +257,7 @@
                 <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
                 <a href="{{ url_for('Article') }}" id="cat-Article" {% if request.path == url_for('Article') %}class="active"{% endif %}>Article</a>
                 <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
-                <a href="{{ url_for('Comment') }}" id="cat-Comment" {% if request.path == url_for('Comment') %}class="active"{% endif %}>Comment</a>
+                <a href="{{ url_for('comment') }}" id="cat-Comment" {% if request.path == url_for('comment') %}class="active"{% endif %}>Comment</a>
             </div>
         </nav>
     </header>
@@ -269,14 +269,23 @@
                 <p>You are signed in.</p>
                 <a href="#">View your previous comments</a>
 
-                <textarea placeholder="Add your comment..."></textarea>
-                <button>Post comment</button>
+                <form method="post" action="{{ url_for('comment') }}">
+                    <textarea name="comment" placeholder="Add your comment..."></textarea>
+                    <button type="submit">Post comment</button>
+                </form>
 
                 <p class="house-rules">All posts are reactively-moderated and must obey the house rules.</p>
                 <a href="#">View all (316)</a>
                 <br>
                 Latest first
             </div>
+
+            {% for comment in comments %}
+                <div class="comment-section">
+                    <p>{{ comment.text }}</p>
+                    <p>Posted by: {{ comment.author.username }} on {{ comment.date_posted }}</p>
+                </div>
+            {% endfor %}
         {% endblock %}
     </main>
 
@@ -286,7 +295,7 @@
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('Article') }}">Article</a>
             <a href="{{ url_for('weather') }}">Weather</a>
-            <a href="{{ url_for('Comment') }}">Comment</a>
+            <a href="{{ url_for('comment') }}">Comment</a>
         </div>
         <div class="language-select">
             <select>

@@ -238,7 +238,7 @@ font-size: 0.7em;
                 <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
                 <a href="{{ url_for('Article') }}" id="cat-Article" {% if request.path == url_for('Article') %}class="active"{% endif %}>Article</a>
                 <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
-                <a href="{{ url_for('Comment') }}" id="cat-Comment" {% if request.path == url_for('Comment') %}class="active"{% endif %}>Comment</a>
+                <a href="{{ url_for('comment') }}" id="cat-Comment" {% if request.path == url_for('comment') %}class="active"{% endif %}>Comment</a>
             </div>
         </nav>
     </header>

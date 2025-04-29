@@ -110,7 +110,6 @@ class Article(db.Model):
     title = db.Column(db.String(100), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     comments = db.relationship('Comment', backref='article', lazy=True)
 
     def __repr__(self):
@@ -122,6 +121,9 @@ class Comment(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
+
+    def __repr__(self):
+        return f"Comment('{self.text}', '{self.date_posted}')"
 
 class WeatherData(db.Model):
     __tablename__ = "weather_data"  # Define the table name!

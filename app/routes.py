@@ -6,7 +6,7 @@ from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
     ResetPasswordRequestForm, ResetPasswordForm
-from app.models import User, Post
+from app.models import User, Post,Comment
 from app.email import send_password_reset_email
 from app.models import WeatherData
 
@@ -299,10 +299,20 @@ def create_tables():
     {"city": "Cape Town", "high": 23, "low": 15, "description": "Windy", "icon": "windy"}
 ]
 
-@app.route('/Comment')
-@login_required
-def Comment():
-    return render_template('Comment.html.j2', title='Comment')
+@app.route("/comment", methods=['GET', 'POST'])
+def comment():  # View function name is 'comment' (lowercase)
+    if request.method == 'POST':
+        comment_text = request.form['comment']
+        user = User.query.first()
+        article = Article.query.first()
+
+        comment_obj = Comment(text=comment_text, author=user, article=article)
+        db.session.add(comment_obj)
+        db.session.commit()
+        return redirect(url_for('comment'))  # Use 'comment' here
+
+    comments = Comment.query.all()
+    return render_template('comment.html.j2', comments=comments, current_user=User.query.first())
 
 @app.route('/ArticleA')
 @login_required
