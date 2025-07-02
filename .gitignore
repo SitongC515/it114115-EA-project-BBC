@@ -126,5 +126,11 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
 logs/*
+
+
+#aws credentials
+~/.aws/credentials
+
+# docker config 
+~/.docker/config.json
