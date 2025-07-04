@@ -151,5 +151,3 @@ WTForms==3.0.1
 zipp==3.11.0
 cloud-sql-python-connector==1.5.0
 pg8000==1.30.3
-SQLAlchemy==2.0.0
-Flask-SQLAlchemy==3.0.3
