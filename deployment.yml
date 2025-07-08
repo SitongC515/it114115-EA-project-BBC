@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbc-deployment
+  labels:
+    app: bbc
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: bbc
+    spec:
+      containers:
+      - name: bbc
+        image: 141968719357.dkr.ecr.us-east-1.amazonaws.com/project-bbc:latest
+        ports:
+        - containerPort: 80
