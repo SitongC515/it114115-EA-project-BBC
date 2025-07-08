@@ -2,20 +2,34 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: bbc-deployment
+  namespace: project-bbc
   labels:
     app: bbc
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: bbc
   template:
     metadata:
       labels:
         app: bbc
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
+                - arm64
       containers:
       - name: bbc
         image: 141968719357.dkr.ecr.us-east-1.amazonaws.com/project-bbc:latest
         ports:
         - containerPort: 80
+        imagePullPolicy: IfNotPresent
+      nodeSelector:
+        kubernetes.io/os: linux
