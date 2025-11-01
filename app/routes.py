@@ -42,9 +42,14 @@ def index():
         'index', page=posts.next_num) if posts.next_num else None
     prev_url = url_for(
         'index', page=posts.prev_num) if posts.prev_num else None
-    return render_template('index.html.j2', title=_('Latest News'), form=form,
+    # also fetch recent articles to show on the homepage
+    try:
+        articles = Article.query.order_by(Article.published_at.desc()).limit(6).all()
+    except Exception:
+        articles = []
+    return render_template('index_fixed.html.j2', title=_('Latest News'), form=form,
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url, articles=articles)
 
 
 @app.route('/explore')

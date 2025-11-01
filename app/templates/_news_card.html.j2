@@ -1,6 +1,12 @@
-<!-- Partial: news card -->
-<div class="news-card">
-    <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/sample.jpg" alt="Sample news image" width="800" height="450">
-    <h3><a href="#">Sample headline</a></h3>
-    <p class="metadata">Now | Sample</p>
-</div>
+<!-- Partial: news card (accessible, semantic) -->
+<article class="news-card" aria-label="News item">
+    <figure>
+        <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/sample.jpg" alt="Sample news image" width="800" height="450">
+        <figcaption class="sr-only">Sample news image</figcaption>
+    </figure>
+    <header>
+        <h3><a href="#" aria-label="Read: Sample headline">Sample headline</a></h3>
+        <div class="metadata"><time datetime="">Now</time> | <span class="category">Sample</span></div>
+    </header>
+    <p class="teaser">Short summary of the article for the card display.</p>
+</article>

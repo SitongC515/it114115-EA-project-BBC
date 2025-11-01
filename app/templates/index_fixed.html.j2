@@ -1,0 +1,166 @@
+{% extends "base.html.j2" %}
+
+{# --- styles taken from index.html.j2 to preserve layout/look --- #}
+{% block styles %}
+{{ super() }}
+<style>
+/* Basic Reset & Body */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+a { text-decoration: none; color: inherit; }
+.bbc-top-bar { display:flex; align-items:center; justify-content:space-between; padding:8px 15px; height:50px; border-bottom:1px solid #cccccc; background-color:#ffffff; }
+.main-categories-nav { display:flex; height:100%; max-width:1280px; width:100%; padding:0 15px; }
+.main-categories-nav a { display:flex; align-items:center; padding:0 12px; font-weight:bold; font-size:0.9em; color:#333; height:100%; border-bottom:3px solid transparent; white-space:nowrap; }
+.main-categories-nav a:hover, .main-categories-nav a.active { border-bottom:3px solid #1a1a1a; color:#1a1a1a; }
+.page-content { max-width:1024px; margin:20px auto; padding:0 15px; }
+.news-layout-grid { display:grid; grid-template-columns: 1fr 2fr 1fr; gap:25px; }
+.news-card img { width:100%; height:auto; display:block; margin-bottom:8px; }
+.news-card h2, .news-card h3 { margin:0 0 5px 0; font-size:1.3em; font-weight:bold; line-height:1.2; color:#1a1a1a; }
+.news-card p { margin:0 0 8px 0; font-size:0.95em; line-height:1.4; color:#4a4a4a; }
+.metadata { font-size:0.8em; color:#5a5a5a; }
+.bbc-footer { margin-top:20px; border-top:1px solid #ccc; padding-top:20px; text-align:center; font-size:0.8em; color:#5a5a5a; }
+</style>
+{% endblock styles %}
+
+{% block title %}
+{% if title %}{{ title }} - BBC News{% else %}BBC News - Home{% endif %}
+{% endblock title %}
+
+{% block content %}
+<header>
+  <div class="bbc-top-bar">
+    <div class="top-bar-left">
+      <span class="menu-icon"><i class="fas fa-bars"></i></span>
+      <span class="search-icon"><i class="fas fa-search"></i></span>
+    </div>
+    <div class="top-bar-center">
+      <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
+        <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="header-logo" width="120" height="50" />
+      </a>
+    </div>
+    <div class="top-bar-right">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('logout') }}" class="logout-link">logout</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="signin-link">Sign in</a>
+      {% endif %}
+    </div>
+  </div>
+  <nav class="bbc-main-categories">
+    <div class="main-categories-nav">
+      <a href="{{ url_for('index') }}" id="cat-home" class="active">Home</a>
+      <a href="{{ url_for('Article') }}" id="cat-Article">Article</a>
+      <a href="{{ url_for('weather') }}" id="cat-weather">Weather</a>
+      <a href="{{ url_for('comment') }}" id="cat-Comment">Comment</a>
+    </div>
+  </nav>
+</header>
+
+<main class="page-content">
+  <div class="news-layout-grid">
+
+    <!-- Left Column -->
+    <section class="news-column-left">
+      {% if articles and articles|length > 0 %}
+        {% set left = articles[0:2] %}
+        {% for a in left %}
+          {{ macros.news_card(a) }}
+        {% endfor %}
+      {% else %}
+        <p>No articles available.</p>
+      {% endif %}
+    </section>
+
+    <!-- Center Column (Main Story) -->
+    <section class="news-column-center">
+      {% if articles and articles|length > 2 %}
+        {{ macros.news_card(articles[2]) }}
+      {% elif articles and articles|length > 0 %}
+        {{ macros.news_card(articles[0]) }}
+      {% endif %}
+    </section>
+
+    <!-- Right Column -->
+    <section class="news-column-right">
+      {% if articles and articles|length > 3 %}
+        {% for a in articles[3:] %}
+          {{ macros.news_card(a) }}
+        {% endfor %}
+      {% endif %}
+    </section>
+
+  </div> <!-- End news-layout-grid -->
+
+  <!-- Film Review Section (kept as a static promotional block) -->
+  <section class="film-review-section">
+    <div class="film-review-content">
+      <div class="film-review-image">
+        <img src="https://ichef.bbci.co.uk/images/ic/1920x1080/p0l3mr3n.jpg.webp" alt="Warfare Film Still" width="1920" height="1080">
+      </div>
+      <div class="film-review-text">
+        <div class="news-section"><a href="#">CULTURE &gt; </a></div>
+        <a href="#"><h3 class="film-review-title">Warfare: 'A bold marvel of a film'</h3></a>
+        <div class="film-review-stars">★★★★★</div>
+        <p class="film-review-description">The Ex Machina director's new epic starring Will Poulter and Cosmo Jarvis was co-directed with a former US Navy Seal, and according to BBC Culture it "does what film does best".</p>
+        <a href="/culture/article/20250410-warfare-review" class="film-review-link">See more</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Sections (static placeholders) -->
+  <section class="news-sections">
+    <div class="news-sections-grid">
+      <!-- left as static placeholders to preserve layout; editorial content should be driven from DB when available -->
+      <div class="news-section">
+        <a href="#">US & CANADA NEWS &gt;</a>
+      </div>
+      <div class="news-section">
+        <a href="#">MORE WORLD NEWS &gt;</a>
+      </div>
+      <div class="news-section">
+        <a href="#">SPORT &gt;</a>
+      </div>
+      <div class="news-section">
+        <a href="#">BUSINESS &gt;</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- BBC Footer -->
+<footer class="bbc-footer">
+  <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>
+  <div class="footer-links">
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('Article') }}">Article</a>
+    <a href="{{ url_for('weather') }}">Weather</a>
+    <a href="{{ url_for('comment') }}">Comment</a>
+  </div>
+  <div class="language-select">
+    <select>
+      <option>BBC in other languages</option>
+      <option>English</option>
+      <option>Chinese</option>
+      <option>Spanish</option>
+    </select>
+  </div>
+  <div class="footer-links">
+    <a href="#">Terms of Use</a>
+    <a href="#">About the BBC</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Cookies</a>
+    <a href="#">Accessibility Help</a>
+    <a href="#">Contact the BBC</a>
+  </div>
+  <div class="copyright">
+    Copyright 2025 BBC. All rights reserved. The BBC is not responsible for the content of external sites. <a href="#">Read about our approach to external linking.</a>
+  </div>
+</footer>
+
+{% endblock content %}

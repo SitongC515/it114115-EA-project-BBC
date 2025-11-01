@@ -1,0 +1,18 @@
+{# Jinja macros for reusable components #}
+{% macro news_card(article) -%}
+<article class="news-card" aria-label="News item">
+  <figure>
+    {% if article.image_url %}
+      <img src="{{ article.image_url }}" alt="{{ article.headline }}" width="800" height="450">
+    {% else %}
+      <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/sample.jpg" alt="{{ article.headline }}" width="800" height="450">
+    {% endif %}
+    <figcaption class="sr-only">{{ article.headline }}</figcaption>
+  </figure>
+  <header>
+    <h3><a href="{{ url_for('article_detail', article_id=article.id) }}" aria-label="Read: {{ article.headline }}">{{ article.headline }}</a></h3>
+    <div class="metadata"><time datetime="{{ article.published_at.isoformat() if article.published_at else '' }}">{{ article.published_at or 'Now' }}</time> | <span class="category">{{ article.category or 'News' }}</span></div>
+  </header>
+  <p class="teaser">{{ article.summary or (article.body[:140] ~ '...') }}</p>
+</article>
+{%- endmacro %}

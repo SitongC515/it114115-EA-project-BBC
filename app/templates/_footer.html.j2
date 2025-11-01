@@ -1,10 +1,30 @@
-<!-- Partial: footer -->
-<div class="footer-wrapper">
-    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>
-    <div class="footer-links">
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('Article') }}">Article</a>
-        <a href="{{ url_for('weather') }}">Weather</a>
-        <a href="{{ url_for('comment') }}">Comment</a>
+<!-- Partial: footer (improved semantics & accessibility) -->
+<footer class="site-footer" role="contentinfo" aria-label="Footer">
+    <div class="footer-top">
+        <a href="{{ url_for('index') }}" aria-label="BBC home">
+            <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC" class="footer-logo" width="200" height="120">
+        </a>
+        <nav class="footer-links" aria-label="Footer navigation">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('Article') }}">Article</a></li>
+                <li><a href="{{ url_for('weather') }}">Weather</a></li>
+                <li><a href="{{ url_for('comment') }}">Comment</a></li>
+            </ul>
+        </nav>
     </div>
-</div>
+    <div class="footer-bottom">
+        <div class="language-select">
+            <label for="lang-select" class="sr-only">Select language</label>
+            <select id="lang-select" aria-label="Select language">
+                <option>BBC in other languages</option>
+                <option>English</option>
+                <option>Chinese</option>
+                <option>Spain</option>
+            </select>
+        </div>
+        <div class="legal">
+            <a href="#">Terms of Use</a> | <a href="#">Privacy Policy</a>
+        </div>
+    </div>
+</footer>

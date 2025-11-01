@@ -11,6 +11,15 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_moment import Moment
 from flask_babel import Babel
+# Optional Flask-Admin integration (dev mode)
+try:
+    from flask_admin import Admin
+    from flask_admin.contrib.sqla import ModelView
+    _FLASK_ADMIN_AVAILABLE = True
+except Exception:
+    Admin = None
+    ModelView = None
+    _FLASK_ADMIN_AVAILABLE = False
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -70,9 +79,21 @@ def get_locale():
 with app.app_context():
     db.create_all()
 
+    # If Flask-Admin is installed (dev mode), register a simple admin interface
+    if _FLASK_ADMIN_AVAILABLE:
+        try:
+            admin = Admin(app, name='Site Admin', template_mode='bootstrap3')
+            # register a few simple model views if models exist
+            try:
+                admin.add_view(ModelView(models.User, db.session))
+            except Exception:
+                # ignore if a model can't be registered
+                pass
+        except Exception:
+            # swallow admin initialization errors so production mode is unaffected
+            pass
 
-# @login.user_loader  
-def load_user(id):
-    return User.query.get(int(id))
+
+# duplicate/old loader removed — the valid @login.user_loader is defined above
 
 from app import routes, errors

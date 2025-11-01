@@ -1,0 +1,47 @@
+/* Consolidated site styles moved from index and partials */
+
+/* Basic Reset & Body */
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  color: #1a1a1a;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Top Navigation Bar */
+.bbc-top-bar { display: flex; align-items: center; justify-content: space-between; padding: 8px 15px; height: 50px; border-bottom: 1px solid #cccccc; background-color: #ffffff; }
+.top-bar-left { display: flex; align-items: center; }
+.top-bar-left .menu-icon, .top-bar-left .search-icon { font-size: 1.4em; padding: 0 10px; cursor: pointer; color: #333; }
+.top-bar-left .search-icon { margin-left: 5px; }
+.top-bar-center .bbc-logo img { height: 28px; display: block; }
+.top-bar-right { display: flex; align-items: center; }
+
+/* Main Category Navigation Bar */
+.bbc-main-categories { background-color: #ffffff; border-bottom: 1px solid #cccccc; height: 45px; display: flex; justify-content: center; align-items: center; }
+.main-categories-nav { display: flex; height: 100%; max-width: 1280px; width: 100%; padding: 0 15px; }
+.main-categories-nav a { display: flex; align-items: center; padding: 0 12px; font-weight: bold; font-size: 0.9em; color: #333; height: 100%; border-bottom: 3px solid transparent; white-space: nowrap; }
+.main-categories-nav a:hover, .main-categories-nav a.active { border-bottom: 3px solid #1a1a1a; color: #1a1a1a; }
+
+/* Page content / grid */
+.page-content { max-width: 1024px; margin: 20px auto; padding: 0 15px; }
+.news-layout-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 25px; }
+
+.news-card { margin-bottom: 20px; }
+.news-card img { width: 100%; height: auto; display: block; margin-bottom: 8px; }
+.news-card h2, .news-card h3 { margin: 0 0 5px 0; font-size: 1.3em; font-weight: bold; line-height: 1.2; color: #1a1a1a; }
+.news-card p { margin: 0 0 8px 0; font-size: 0.95em; line-height: 1.4; color: #4a4a4a; }
+.news-card .metadata { font-size: 0.8em; color: #5a5a5a; }
+
+/* Footer */
+.bbc-footer { margin-top: 20px; border-top: 1px solid #ccc; padding-top: 20px; text-align: center; font-size: 0.8em; color: #5a5a5a; }
+.footer-links { margin-bottom: 10px; }
+
+/* Utility */
+.icon-small { height: 15px; width: 15px; vertical-align: middle; }
+
+/* Skip link helper (moved from header) */
+.visually-hidden-focusable { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.visually-hidden-focusable:focus { position: static; width: auto; height: auto; margin: 8px; padding: 6px 8px; background: #fff; border: 1px solid #ccc; z-index: 9999; }

@@ -1,0 +1,9 @@
+Flask==2.2.2
+Flask-SQLAlchemy==3.0.2
+SQLAlchemy==2.0.41
+psycopg2==2.9.5
+Flask-Login==0.6.2
+Flask-WTF==1.0.1
+Flask-Babel==2.0.0
+WTForms==3.2.1
+PyJWT==2.8.0

@@ -135,7 +135,7 @@ flask run
 
 ---
 
-## Phase 4 — Seed data 與管理介面（可選）
+## Phase 4 — Seed data 與管理介面
 目標：新增 scripts 來匯入示例新聞與提供簡易編輯介面。
 
 - Task 4.1 — scripts/seed_news.py
@@ -148,11 +148,10 @@ flask run
   - Validation: `Article.query.count()` >= 種子數量。
 
   - Tests:
-- [ ] `test/test_phase4.py` — Skipped
+- [x] `test/test_phase4.py` — Passed
 
-- Task 4.2 — 管理介面（可選）
+- Task 4.2 — 管理介面
   - Action: 可快速導入 `Flask-Admin` 或建立一個受保護的 route 來管理文章。
-  - Files: `app/admin.py` 或 `app/routes.py` 增加後台路由
 
 ---
 

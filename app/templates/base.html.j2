@@ -12,6 +12,7 @@
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}">
     {% block styles %}
     <style>
         /* Basic Reset & Body */
@@ -428,45 +429,22 @@
             width: 15px;
             vertical-align: middle;
         }
+        /* Skip-link helper moved here from header partial */
+        .visually-hidden-focusable { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+        .visually-hidden-focusable:focus { position: static; width: auto; height: auto; margin: 8px; padding: 6px 8px; background: #fff; border: 1px solid #ccc; z-index: 9999; }
     </style>
     {% endblock styles %}
 </head>
 <body>
     {# include partial header for Phase 3 #}
-    {% include '_header.html.j2' %}
-    <header>
-        <!-- Top Bar -->
-        <div class="bbc-top-bar">
-            <div class="top-bar-left">
-                <span class="menu-icon"><i class="fas fa-bars"></i></span>
-                <span class="search-icon"><i class="fas fa-search"></i></span>
-            </div>
-            <div class="top-bar-center">
-                <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" width="120" height="50" />
-                </a>
-            </div>
-            <div class="top-bar-right">
-                <a href="{{ url_for('register') }}" class="register-button">Register</a>
-                <a href="{{ url_for('login') }}" class="signin-link">Sign In</a>
-            </div>
-        </div>
-
-        <!-- Main Categories Navigation -->
-        <nav class="bbc-main-categories">
-            <div class="main-categories-nav">
-                <a href="{{ url_for('index') }}" id="cat-home" {% if request.path == url_for('index') %}class="active"{% endif %}>Home</a>
-                <a href="{{ url_for('Article') }}" id="cat-Article" {% if request.path == url_for('Article') %}class="active"{% endif %}>Article</a>
-                <a href="{{ url_for('weather') }}" id="cat-weather" {% if request.path == url_for('weather') %}class="active"{% endif %}>Weather</a>
-                <a href="{{ url_for('comment') }}" id="cat-Comment" {% if request.path == url_for('comment') %}class="active"{% endif %}>Comment</a>
-            </div>
-        </nav>
-    </header>
+    {% include "_header.html.j2" %}
+    {# import macros for site-wide use #}
+    {% import "_macros.html.j2" as macros %}
 
     <main class="page-content">
-        {# include partials for cards and widgets (phase 3) #}
-        {% include '_news_card.html.j2' %}
-        {% include '_weather_widget.html.j2' %}
+    {# include partials for cards and widgets (phase 3) #}
+    {% include "_news_card.html.j2" %}
+    {% include "_weather_widget.html.j2" %}
 
         {% block content %}
             {# Page-specific content will be inserted here #}
@@ -474,40 +452,7 @@
     </main>
 
     {# include partial footer for Phase 3 #}
-    {% include '_footer.html.j2' %}
-
-    <footer class="bbc-footer">
-    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>
-        <div class="footer-links">
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('Article') }}">Article</a>
-            <a href="{{ url_for('weather') }}">Weather</a>
-            <a href="{{ url_for('comment') }}">Comment</a>
-        </div>
-
-        <div class="language-select">
-            <select>
-                <option>BBC in other languages</option>
-                <option>English</option>
-                <option>Chinese</option>
-                <option>Spain</option>
-            </select>
-        </div>
-        <div class="footer-links">
-            <a href="#">Terms of Use</a>
-            <a href="#">About the BBC</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Cookies</a>
-            <a href="#">Accessibility Help</a>
-            <a href="#">Contact the BBC</a>
-            <a href="#">Advertise with us</a>
-            <a href="#">Do not share or sell my info</a>
-            <a href="#">Contact technical support</a>
-        </div>
-        <div class="copyright">
-            Copyright 2025 BBC. All rights reserved. The BBC is not responsible for the content of external sites. <a href="#">Read about our approach to external linking.</a>
-        </div>
-    </footer>
+    {% include "_footer.html.j2" %}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
