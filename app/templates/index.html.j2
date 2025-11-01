@@ -1,66 +1,7 @@
-{% extends 'bootstrap/base.html' %}
-
-{% block styles %}
-{{ super() }}
-
-<!-- Add custom styles here or link to your CSS file -->
-<style>
-
-/* Basic Reset & Body */
-
-body {
-
-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-margin: 0;
-
-padding: 0;
-
-background-color: #ffffff;
-
-color: #1a1a1a;
-
-}
-
-a {
-
-text-decoration: none;
-
-color: inherit;
-
-}
-
-/* --- Top Navigation Bar --- */
-
-.bbc-top-bar {
-
-display: flex;
-
-align-items: center;
-
-justify-content: space-between;
-
-padding: 8px 15px;
-
-height: 50px;
-
-border-bottom: 1px solid #cccccc;
-
-background-color: #ffffff;
-
 {% extends "base.html.j2" %}
 
 {# Official dynamic homepage: latest article in center, next two in left column, rest on the right #}
-{% block styles %}
-{{ super() }}
-<style>
-/* condensed site styles (kept minimal; bulk styles live in static/css/site.css) */
-.page-content { max-width:1024px; margin:20px auto; padding:0 15px; }
-.news-layout-grid { display:grid; grid-template-columns: 1fr 2fr 1fr; gap:25px; }
-.news-card img { width:100%; height:auto; display:block; margin-bottom:8px; }
-.bbc-footer { margin-top:20px; border-top:1px solid #ccc; padding-top:20px; text-align:center; font-size:0.8em; color:#5a5a5a; }
-</style>
-{% endblock styles %}
+{% block styles %}{{ super() }}{% endblock styles %}
 
 {% block title %}
 {% if title %}{{ title }} - BBC News{% else %}BBC News - Home{% endif %}
@@ -143,7 +84,11 @@ background-color: #ffffff;
                 <a href="#"><h3 class="film-review-title">Warfare: 'A bold marvel of a film'</h3></a>
                 <div class="film-review-stars">★★★★★</div>
                 <p class="film-review-description">The Ex Machina director's new epic starring Will Poulter and Cosmo Jarvis was co-directed with a former US Navy Seal, and according to BBC Culture it "does what film does best".</p>
-                <a href="#" class="film-review-link">See more</a>
+                        {% if film_article_id %}
+                            <a href="{{ url_for('article_detail', article_id=film_article_id) }}" class="film-review-link">See more</a>
+                        {% else %}
+                            <a href="#" class="film-review-link">See more</a>
+                        {% endif %}
             </div>
         </div>
     </section>

@@ -18,7 +18,6 @@
         {{ article.body | safe }}
       </div>
     </article>
-
     <section id="comments">
       <h2>Comments ({{ comments|length }})</h2>
       <form method="post" action="{{ url_for('comment') }}">
@@ -26,11 +25,26 @@
         {{ form.article_id(value=article.id) }}
         <div>
           {{ form.comment(class='form-control', placeholder='Add your comment...') }}
+          {% if form.comment.errors %}
+            <ul class="errors">
+              {% for error in form.comment.errors %}
+                <li style="color: #b94a48">{{ error }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </div>
         <div>
           {{ form.submit(class='btn btn-primary') }}
         </div>
       </form>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
 
       {% if comments %}
         <ul>

@@ -47,9 +47,19 @@ def index():
         articles = Article.query.order_by(Article.published_at.desc()).limit(6).all()
     except Exception:
         articles = []
-    return render_template('index_fixed.html.j2', title=_('Latest News'), form=form,
+
+    # pick a film/culture article to feature in the film-review block if available
+    film_article_id = None
+    try:
+        film_article = Article.query.filter_by(category='Culture').order_by(Article.published_at.desc()).first()
+        if film_article:
+            film_article_id = film_article.id
+    except Exception:
+        film_article_id = None
+
+    return render_template('index.html.j2', title=_('Latest News'), form=form,
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url, articles=articles)
+                           prev_url=prev_url, articles=articles, film_article_id=film_article_id)
 
 
 @app.route('/explore')
@@ -275,11 +285,20 @@ def comment():
             flash('Your comment has been posted!', 'success')
             # redirect back to the same context (article or general comment page)
             if posted_article_id:
-                return redirect(url_for('comment', article_id=posted_article_id))
+                # When posting from an article detail page, return to the article view
+                return redirect(url_for('article_detail', article_id=posted_article_id))
             return redirect(url_for('comment'))
         except Exception as e:
             db.session.rollback()
             flash('An error occurred while posting your comment. Please try again.', 'danger')
+            # If this post was for a specific article, render that article page with the form and errors
+            if posted_article_id:
+                try:
+                    art = Article.query.get(posted_article_id)
+                    art_comments = Comment.query.filter_by(article_id=posted_article_id).order_by(Comment.date_posted.desc()).all()
+                    return render_template('article_detail.html.j2', article=art, comments=art_comments, form=form, title=art.headline)
+                except Exception:
+                    pass
             return render_template('comment.html.j2', comments=comments, form=form, title='Comments')
 
     return render_template('comment.html.j2', comments=comments, form=form, title='Comments')
