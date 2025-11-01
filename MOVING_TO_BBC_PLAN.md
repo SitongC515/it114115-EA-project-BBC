@@ -131,7 +131,7 @@ flask run
   - Validation: 首頁顯示 hero 與多個新聞卡片，且 weather widget 顯示資料（若 DB 有 sample weather）。
 
   - Tests:
-- [ ] `test/test_phase3.py` — Skipped
+- [x] `test/test_phase3.py` — Passed
 
 ---
 

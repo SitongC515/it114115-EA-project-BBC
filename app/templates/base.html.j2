@@ -432,6 +432,8 @@
     {% endblock styles %}
 </head>
 <body>
+    {# include partial header for Phase 3 #}
+    {% include '_header.html.j2' %}
     <header>
         <!-- Top Bar -->
         <div class="bbc-top-bar">
@@ -462,10 +464,17 @@
     </header>
 
     <main class="page-content">
+        {# include partials for cards and widgets (phase 3) #}
+        {% include '_news_card.html.j2' %}
+        {% include '_weather_widget.html.j2' %}
+
         {% block content %}
             {# Page-specific content will be inserted here #}
         {% endblock content %}
     </main>
+
+    {# include partial footer for Phase 3 #}
+    {% include '_footer.html.j2' %}
 
     <footer class="bbc-footer">
     <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>

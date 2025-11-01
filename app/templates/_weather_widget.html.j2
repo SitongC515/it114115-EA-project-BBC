@@ -1,0 +1,11 @@
+<!-- Partial: weather widget -->
+<div class="weather-widget">
+    <h4>Weather</h4>
+    <ul>
+    {% for w in (weather_data or [])[:3] %}
+        <li>{{ w.city }}: {{ w.today_temperature_high }}° / {{ w.today_temperature_low }}°</li>
+    {% else %}
+        <li>No weather data</li>
+    {% endfor %}
+    </ul>
+</div>
