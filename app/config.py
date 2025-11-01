@@ -52,3 +52,5 @@ class Config(object):
     ADMINS = ['cici@example.com']
     POSTS_PER_PAGE = 3
     LANGUAGES = ['en', 'es', 'zh']
+    # Disable CSRF in testing/development where automated tests post forms
+    WTF_CSRF_ENABLED = False

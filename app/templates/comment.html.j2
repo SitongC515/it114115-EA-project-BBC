@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comments page for BBC-style site." />
+    <meta name="keywords" content="BBC,comments,discussion" />
     <title>
         {% block title %}
             BBC News - Comments
-        {% endblock %}
+        {% endblock title %}
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -262,7 +264,7 @@
             color: #0c5460;
         }
     </style>
-    {% endblock %}
+    {% endblock styles %}
 </head>
 <body>
     <header>
@@ -274,7 +276,7 @@
             </div>
             <div class="top-bar-center">
                 <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px;"/>
+                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="header-logo" width="120" height="50"/>
                 </a>
             </div>
             <div class="top-bar-right">
@@ -347,7 +349,7 @@
     </main>
 
     <footer class="bbc-footer">
-        <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>
         <div class="footer-links">
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('Article') }}">Article</a>

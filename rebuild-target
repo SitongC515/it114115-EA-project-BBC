@@ -1,0 +1,121 @@
+## Repo 簡介（繁體中文）
+
+以下是為此專案產生的 Markdown 描述，已涵蓋專案目標、技術堆疊、主要檔案說明、如何執行、測試與建議改進項目。你可以把內容直接存成 `README.md` 或其他說明檔使用。
+
+---
+
+# it114115-EA-project-BBC
+
+簡短描述：
+一個以 Flask 為基礎的微部落格/範例 Web 應用，包含使用者認證、貼文、留言、追蹤功能、簡單天氣資料顯示、以及多語系 (translations) 與範本。專案同時提供 Docker 與部署相關檔案。
+
+## 主要特性
+- 使用 Flask + Flask-Login 做使用者認證與 session 管理
+- 使用 SQLAlchemy (藉由 `db`) 做 ORM 與資料庫遷移 (migrations)
+- 貼文（Post）、留言（Comment）功能與關注（follow）關係
+- 密碼重設（email）功能
+- 天氣資料簡單展示頁面（`/weather`），並提供資料初始化路由
+- 多語系支援（`translations/`）
+- 提供 Dockerfile、部署腳本與 CI/部署設定（`deploy.sh`, `deployment.yml`, `service.yml`）
+
+## 技術堆疊
+- Python 3 (flask 生態)
+- Flask, Flask-Login, Flask-Babel, Flask-WTF 等
+- SQLAlchemy + Alembic（migrations）
+- Jinja2 templates
+- Docker (Dockerfile 已包含)
+- 測試腳本 `tests.py`
+
+## 專案結構（摘錄重要檔案）
+- `run.py` / `microblog.py` — 應用啟動或示例程式（根目錄存在多個啟動檔）
+- `requirements.txt` — Python 相依套件
+- `Dockerfile`、`deploy.sh`、`deployment.yml`、`service.yml` — 容器化/部署相關
+- `app/` — 應用程式程式碼
+  - `__init__.py` — app 與 db 初始化（推測）
+  - `routes.py` — 所有路由與主要業務邏輯（大量頁面與功能）
+  - `models.py` — ORM 模型 (User, Post, Comment, Article, WeatherData 等)
+  - `forms.py` — WTForms 定義
+  - `email.py` — 寄送重設密碼郵件
+  - `templates/` — Jinja2 模板（多個文章範本、login、register、user、weather 等）
+  - `translations/` — i18n 翻譯
+- `migrations/` — Alembic migration 設定
+- `tests.py` — 測試（請查看內容以確定框架與測試範圍）
+- `logs/` — 應用日誌存放目錄
+
+## 主要路由（摘錄 / 重點）
+- `/`, `/index` — 貼文首頁（需登入）
+- `/login`, `/logout`, `/register` — 使用者認證
+- `/user/<username>` — 使用者個人頁面
+- `/edit_profile` — 編輯個人資料
+- `/follow/<username>`, `/unfollow/<username>` — 追蹤與取消追蹤
+- `/article`, `/ArticleA`...`/ArticleF` — 文章或示例文章頁面
+- `/weather` — 顯示天氣資料，支援 `?city=<query>` 查詢
+- `/init_db` — 一個用於初始化資料庫範例資料的路由（注意：生產環境應移除或保護）
+- `/comment` — 留言板（建立、列出留言）
+- `/setcookie`, `/getcookie` — 簡易 cookie 設定與讀取示範
+
+## 主要資料模型（依 `models.py` 推測）
+- User：使用者資訊、密碼雜湊、最後活動時間、關注關係等
+- Post：貼文（body、timestamp、author）
+- Comment：留言（text、user_id、date_posted）
+- Article：文章範本或資料（視實作）
+- WeatherData：儲存範例天氣資料（city、date、high/low、description、icon）
+
+## 如何在本機啟動（建議步驟）
+1. 建議建立虛擬環境並安裝依賴：
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+2. 設定環境變數（視 `app/__init__.py` 與 `config.py` 需要），例如：
+```bash
+export FLASK_APP=run.py
+export FLASK_ENV=development
+# 若使用郵件或資料庫，有可能需要：
+# export DATABASE_URL=sqlite:///app.db
+# export MAIL_SERVER=...
+```
+
+3. 初始化資料庫（兩種選擇）：
+- 使用提供的 route（僅開發/測試用）：
+  設定好環境啟動後，造訪 `http://localhost:5000/init_db` 來將範例天氣資料寫入 DB。
+- 或用 flask shell / Alembic 指令：
+```bash
+flask db upgrade   # 若 migrations 設定妥當
+```
+
+4. 執行應用：
+```bash
+flask run
+# 或
+python run.py
+# 或
+python microblog.py
+```
+
+5. 測試：
+```bash
+python tests.py
+# 或視專案內測試檔與框架 (pytest/unittest) 執行相對指令
+```
+
+## 開發與部署（注意事項）
+- `Dockerfile` 與 `deployment.yml`、`service.yml` 已存在，可用來容器化或在目標平台部署。檢查並替換任何硬編碼的祕密或設定值為環境變數。
+- `init_db` route 在生產環境中很危險（會修改 DB），建議移除或限制成只在 `FLASK_ENV=development` 時啟用。
+- 多語系：`app/translations` 與 `flask_babel` 已配置，用來支援 i18n。
+
+## 建議改進（可優先採納）
+1. 秘密與設定：使用 `.env` 或類似方式，避免在檔案內硬編碼敏感資訊。可引入 `python-dotenv` 在開發時載入。
+2. 保護初始化路由：將 `/init_db` 改為 CLI 指令或只有在 `FLASK_ENV=development` 時啟用。
+3. 測試：補上單元與整合測試（cover happy path + 1-2 edge cases）。使用 `pytest` 並在 CI 中執行。
+4. CI/CD：在 `.github/workflows` 或其他系統加入自動測試與 lint（例如 flake8/black）。
+5. 輸入驗證與錯誤處理：確保所有表單 & route 都有適當的異常處理與邊界檢查，並減少在 template 中直接列印未經處理的輸入。
+
+## 風險提示 / 安全提醒
+- 切勿在公開 repo 或產線配置中放置郵件伺服器密碼、API key 或資料庫密碼。
+- Cookie 設定中若使用 `httponly`、`secure` 等選項以提高安全性，登入相關 cookie 應啟用安全選項。
+- 密碼重設機制要限制 token 有效期限並使用安全的郵件服務。
+
+

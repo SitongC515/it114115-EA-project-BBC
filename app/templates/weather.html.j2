@@ -539,8 +539,7 @@
     <header>
         <div class="top-bar-center">
             <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo"
-                    style="height: 120px;" />
+                <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="header-logo" />
             </a>
         </div>
         <!-- Main Categories Navigation -->
@@ -564,30 +563,30 @@
         </div>
 
         <div class="globe">
-            <div class="city-marker london">London <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker chicago">Chicago <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker cape-town">Cape Town <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker san-jose">San José <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker brasilia">Brasilia <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker dakar">Dakar <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker tbilisi">Tbilisi <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
-            <div class="city-marker mombasa">Mombasa <img
-                    src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
-                    style="height: 15px; width: 15px;"></div>
+        <div class="city-marker london">London <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker chicago">Chicago <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163661.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker cape-town">Cape Town <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker san-jose">San José <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker brasilia">Brasilia <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker dakar">Dakar <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker tbilisi">Tbilisi <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
+        <div class="city-marker mombasa">Mombasa <img
+            src="https://cdn-icons-png.flaticon.com/128/1163/1163605.png" alt="Weather"
+            class="icon-small"></div>
         </div>
 
         <!-- Display weather data from the database -->
@@ -675,13 +674,13 @@
                     </div>
                 </div>
                 <footer class="bbc-footer">
-                    <a href="/index"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png"
-                            alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+                    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png"
+                            alt="BBC Logo" class="footer-logo"></a>
                     <div class="footer-links">
-                        <a href="/index">Home</a>
-                        <a href="/Article">Article</a>
-                        <a href="/weather">Weather</a>
-                        <a href="/comment">Comment</a>
+                        <a href="{{ url_for('index') }}">Home</a>
+                        <a href="{{ url_for('Article') }}">Article</a>
+                        <a href="{{ url_for('weather') }}">Weather</a>
+                        <a href="{{ url_for('comment') }}">Comment</a>
 
                     </div>
                     <div class="language-select">

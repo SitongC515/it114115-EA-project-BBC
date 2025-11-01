@@ -1,8 +1,13 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 {% block app_content %}
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in to your BBC account</title>
+    <meta name="description" content="Sign in to your BBC account." />
+    <meta name="keywords" content="BBC,login,account" />
     <style>
          body {
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -100,11 +105,11 @@
 </head>
 <body>
      <div class="container">
-        <a href="index.html/base.html" class="close-button">
-        <img src="https://i0.wp.com/cleanfeed.thetvroom.com/media/2019/08/bbc-logo-correct-001-01.png?resize=800%2C271&ssl=1" width="400" class="d-block mx-auto mb-3"></a>
+        <a href="{{ url_for('index') }}" class="close-button">
+            <img src="https://i0.wp.com/cleanfeed.thetvroom.com/media/2019/08/bbc-logo-correct-001-01.png?resize=800%2C271&ssl=1" width="400" height="136" alt="BBC Logo" class="d-block mx-auto mb-3"></a>
         
 
-        <form method="POST">
+        <form method="post">
             {{ wtf.quick_form(form) }}
             
         </form>
@@ -113,7 +118,7 @@
         <p>Sign in and we'll help you discover more things you'll love.</p>
 
         <div class="help-links">
-            <a href="/reset_password_request">I have forgotten my password</a><br>
+            <a href="{{ url_for('reset_password_request') }}">I have forgotten my password</a><br>
             
         </div>
 
@@ -121,9 +126,9 @@
 
         <div class="register-link">
             <p>Don't have a BBC account?</p>
-            <a href="/register">Register now</a>
+            <a href="{{ url_for('register') }}">Register now</a>
         </div>
     </div>
 </body>
 </html>
-{% endblock %}
+{% endblock app_content %}

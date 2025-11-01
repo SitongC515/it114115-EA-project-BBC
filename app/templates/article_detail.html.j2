@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title or 'Article' }}</title>
+  </head>
+  <body>
+    <article>
+      <h1>{{ article.headline }}</h1>
+      {% if article.published_at %}
+      <p><small>Published: {{ article.published_at }}</small></p>
+      {% endif %}
+      {% if article.image_url %}
+        <img src="{{ article.image_url }}" alt="{{ article.headline }}" width="800" height="450" />
+      {% endif %}
+      <div class="article-body">
+        {{ article.body | safe }}
+      </div>
+    </article>
+
+    <section id="comments">
+      <h2>Comments ({{ comments|length }})</h2>
+      <form method="post" action="{{ url_for('comment') }}">
+        {{ form.hidden_tag() }}
+        {{ form.article_id(value=article.id) }}
+        <div>
+          {{ form.comment(class='form-control', placeholder='Add your comment...') }}
+        </div>
+        <div>
+          {{ form.submit(class='btn btn-primary') }}
+        </div>
+      </form>
+
+      {% if comments %}
+        <ul>
+          {% for c in comments %}
+            <li><strong>{{ c.user.username }}</strong> ({{ c.date_posted }}): {{ c.text }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No comments yet.</p>
+      {% endif %}
+    </section>
+  </body>
+</html>

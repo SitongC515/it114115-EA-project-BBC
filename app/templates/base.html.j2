@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" meta="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BBC-style news site example built with Flask. Latest headlines, opinion, culture, sport and technology." />
+    <meta name="keywords" content="BBC,news,articles,technology,sport,culture,world" />
     <title>
         {% block title %}
             BBC News - Home
-        {% endblock %}
+        {% endblock title %}
     </title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -409,8 +411,25 @@
         .copyright {
             font-size: 0.7em;
         }
+        /* Utility classes to replace inline styles */
+        .footer-logo {
+            height: 120px;
+            margin-bottom: 10px;
+        }
+
+        .header-logo {
+            height: 120px;
+            width: auto;
+            display: block;
+        }
+
+        .icon-small {
+            height: 15px;
+            width: 15px;
+            vertical-align: middle;
+        }
     </style>
-    {% endblock %}
+    {% endblock styles %}
 </head>
 <body>
     <header>
@@ -422,7 +441,7 @@
             </div>
             <div class="top-bar-center">
                 <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" />
+                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" width="120" height="50" />
                 </a>
             </div>
             <div class="top-bar-right">
@@ -445,11 +464,11 @@
     <main class="page-content">
         {% block content %}
             {# Page-specific content will be inserted here #}
-        {% endblock %}
+        {% endblock content %}
     </main>
 
     <footer class="bbc-footer">
-        <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="200" height="120"></a>
         <div class="footer-links">
             <a href="{{ url_for('index') }}">Home</a>
             <a href="{{ url_for('Article') }}">Article</a>

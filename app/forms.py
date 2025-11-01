@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+    TextAreaField, HiddenField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from flask_babel import _, lazy_gettext as _l
@@ -70,4 +70,5 @@ class PostForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     comment = TextAreaField('Add your comment:', validators=[DataRequired()])
+    article_id = HiddenField('Article ID')
     submit = SubmitField('Post comment')

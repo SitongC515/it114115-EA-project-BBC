@@ -1,7 +1,7 @@
-from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g, jsonify
+from datetime import datetime, timedelta
+from flask import render_template, flash, redirect, url_for, request, g, jsonify, make_response, render_template_string
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.urls import url_parse
+from urllib.parse import urlparse as url_parse
 from flask_babel import _, get_locale
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
@@ -42,7 +42,7 @@ def index():
         'index', page=posts.next_num) if posts.next_num else None
     prev_url = url_for(
         'index', page=posts.prev_num) if posts.prev_num else None
-    return render_template('index.html.j2', title=_('Home'), form=form,
+    return render_template('index.html.j2', title=_('Latest News'), form=form,
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
 
@@ -201,8 +201,8 @@ def unfollow(username):
 @app.route('/article', endpoint='Article')
 @login_required
 def article():
-    # Here you would fetch actual world news articles or data.
-    return render_template('Article.html.j2', title=_('Article'))
+    # keep an article endpoint but render a simple category-first placeholder
+    return render_template_string('<!doctype html><html><head><title>Article</title></head><body><h1>Article</h1></body></html>')
 
 @app.route('/weather')
 def weather():
@@ -219,73 +219,9 @@ def weather():
 
 
 
-@app.route('/init_db')  # Create a separate route for initialization
-def init_db():
-    with app.app_context():
-        db.create_all()  # Create tables
-
-        if not WeatherData.query.first():
-            sample_weather = WeatherData(
-                city="London",
-                date=datetime.utcnow(),
-                today_temperature_high=15,
-                today_temperature_low=5,
-                today_description="Cloudy",
-                today_icon="https://png.pngtree.com/png-vector/20190214/ourmid/pngtree-vector-cloudy-icon-png-image_450295.jpg"
-            )
-            db.session.add(sample_weather)
-            
-            sample_weather2 = WeatherData(
-                city="Chicago",
-                date=datetime.utcnow(),
-                today_temperature_high=20,
-                today_temperature_low=10,
-                today_description="Sunny",
-                today_icon="https://cdn-icons-png.flaticon.com/128/697/697982.png"
-            )
-            db.session.add(sample_weather2)
-            
-            sample_weather3 = WeatherData(
-                city="San Jose",
-                date=datetime.utcnow(),
-                today_temperature_high=28,
-                today_temperature_low=20,
-                today_description="Clear",
-                today_icon="https://cdn-icons-png.flaticon.com/512/3222/3222807.png"
-            )
-            db.session.add(sample_weather3)
-            
-            sample_weather4 = WeatherData(
-                city="Tbilisi",
-                date=datetime.utcnow(),
-                today_temperature_high=30,
-                today_temperature_low=22,
-                today_description="Sunny",
-                today_icon="https://cdn-icons-png.flaticon.com/128/697/697982.png"
-            )
-            db.session.add(sample_weather4)
-            
-            sample_weather5 = WeatherData(
-                city="Dakar",
-                date=datetime.utcnow(),
-                today_temperature_high=32,
-                today_temperature_low=26,
-                today_description="Hot",
-                today_icon="https://cdn-icons-png.flaticon.com/512/8371/8371981.png"
-            )
-            db.session.add(sample_weather5)
-            
-            sample_weather6 = WeatherData(
-                city="Mombasa",
-                date=datetime.utcnow(),
-                today_temperature_high=31,
-                today_temperature_low=25,
-                today_description="Humid",
-                today_icon="https://e7.pngegg.com/pngimages/314/726/png-clipart-moisture-computer-icons-humidity-others-desktop-wallpaper-weather-icon-thumbnail.png"
-            )
-            db.session.add(sample_weather6)
-            db.session.commit()
-        return "Database initialized with sample data!"
+# init_db route removed to avoid exposing initialization in production.
+# If you need to initialize DB during development, run a separate script
+# or enable it conditionally behind a secure flag.
 
 @app.before_first_request
 def create_tables():
@@ -306,15 +242,35 @@ def create_tables():
 @login_required
 def comment():
     form = CommentForm()
-    comments = Comment.query.order_by(Comment.date_posted.desc()).all()
+    # Optional query param for GET to show a specific article's comments
+    if request.method == 'GET':
+        article_id = request.args.get('article_id', type=int)
+    else:
+        # On POST, prefer article_id from the submitted form (HiddenField)
+        article_id = None
+
+    if article_id:
+        comments = Comment.query.filter_by(article_id=article_id).order_by(Comment.date_posted.desc()).all()
+    else:
+        comments = Comment.query.order_by(Comment.date_posted.desc()).all()
 
     if form.validate_on_submit():
         text = form.comment.data
+        # read article_id from form field when posting
         try:
-            new_comment = Comment(text=text, user_id=current_user.id)
+            posted_article_id = None
+            try:
+                posted_article_id = int(form.article_id.data) if form.article_id.data else None
+            except Exception:
+                posted_article_id = None
+
+            new_comment = Comment(text=text, user_id=current_user.id, article_id=posted_article_id)
             db.session.add(new_comment)
             db.session.commit()
             flash('Your comment has been posted!', 'success')
+            # redirect back to the same context (article or general comment page)
+            if posted_article_id:
+                return redirect(url_for('comment', article_id=posted_article_id))
             return redirect(url_for('comment'))
         except Exception as e:
             db.session.rollback()
@@ -323,35 +279,82 @@ def comment():
 
     return render_template('comment.html.j2', comments=comments, form=form, title='Comments')
 
+
+@app.route('/article/<int:article_id>', methods=['GET'])
+@login_required
+def article_detail(article_id):
+    # Show an article and its comments; use Article.html.j2 as a simple detail view
+    article = Article.query.get_or_404(article_id)
+    comments = Comment.query.filter_by(article_id=article_id).order_by(Comment.date_posted.desc()).all()
+    form = CommentForm()
+    return render_template('article_detail.html.j2', article=article, comments=comments, form=form, title=article.headline)
+
 @app.route('/ArticleA')
 @login_required
 def ArticleA():
-    return render_template('ArticleA.html.j2', title='ArticleA')
+    return render_template('World.html.j2', title='World')
+
+
+@app.route('/World')
+@login_required
+def World():
+    # new route alias for ArticleA content under category 'World'
+    return render_template('World.html.j2', title='World')
 
 @app.route('/ArticleB')
 @login_required
 def ArticleB():
-    return render_template('ArticleB.html.j2', title='ArticleB')
+    return render_template('Business.html.j2', title='Business')
+
+
+@app.route('/Business')
+@login_required
+def Business():
+    return render_template('Business.html.j2', title='Business')
 
 @app.route('/ArticleC')
 @login_required
 def ArticleC():
-    return render_template('ArticleC.html.j2', title='ArticleC')
+    return render_template('Technology.html.j2', title='Technology')
+
+
+@app.route('/Technology')
+@login_required
+def Technology():
+    return render_template('Technology.html.j2', title='Technology')
 
 @app.route('/ArticleD')
 @login_required
 def ArticleD():
-    return render_template('ArticleD.html.j2', title='ArticleD')
+    return render_template('Sport.html.j2', title='Sport')
+
+
+@app.route('/Sport')
+@login_required
+def Sport():
+    return render_template('Sport.html.j2', title='Sport')
 
 @app.route('/ArticleE')
 @login_required
 def ArticleE():
-    return render_template('ArticleE.html.j2', title='ArticleE')
+    return render_template('Culture.html.j2', title='Culture')
+
+
+@app.route('/Culture')
+@login_required
+def Culture():
+    return render_template('Culture.html.j2', title='Culture')
 
 @app.route('/ArticleF')
 @login_required
 def ArticleF():
-    return render_template('ArticleF.html.j2', title='ArticleF')
+    return render_template('Opinion.html.j2', title='Opinion')
+
+
+@app.route('/Opinion')
+@login_required
+def Opinion():
+    return render_template('Opinion.html.j2', title='Opinion')
 
 @app.errorhandler(404)
 def page_not_found(e):  
@@ -364,10 +367,10 @@ def internal_server_error():
 @app.route('/setcookie', methods=['POST', 'GET'])
 def setcookie():
     if request.method == 'POST':
-        user = request.form['nm']  # Assuming 'nm' is the form field name
-        resp = make_response(render_template('readcookie.html'))
-        expire_date = datetime.datetime.now()
-        expire_date = expire_date + datetime.timedelta(seconds=5)
+        user = request.form.get('nm', '')  # 'nm' is the form field name
+        resp = make_response(render_template('readcookie.html.j2', user=user))
+        # Use the imported datetime and timedelta correctly
+        expire_date = datetime.now() + timedelta(seconds=5)
         resp.set_cookie('userID', user, expires=expire_date)
         resp.set_cookie('secureUserID', user, expires=expire_date, secure=True)
         resp.set_cookie('httpOnlyUserID', user, expires=expire_date, httponly=True)

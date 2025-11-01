@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Article listing and details for BBC-style site." />
+    <meta name="keywords" content="BBC,articles,news" />
     <title>BBC News</title>
     <style>
         body {
@@ -395,7 +397,7 @@ font-size: 0.7em;
             </div>
             <div class="top-bar-center">
                 <a href="{{ url_for('index') }}" id="bbc-logo" title="BBC Home">
-                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px;"/>
+                    <img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="header-logo" width="360" height="120"/>
                 </a>
             </div>
             <div class="top-bar-right">
@@ -417,54 +419,54 @@ font-size: 0.7em;
 
     <div class="main-content">
         <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/880b/live/11f51ae0-210e-11f0-83a1-1998ef896e82.jpg.webp" alt="News Image">
-            <a href="/ArticleA"><h2>Trump says he is 'not happy' with deadly Russian strikes on Kyiv</h2></a>
+            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/880b/live/11f51ae0-210e-11f0-83a1-1998ef896e82.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('World') }}"><h2>Trump says he is 'not happy' with deadly Russian strikes on Kyiv</h2></a>
             <p>The overnight strikes killed at least 12 people and injured 90 more, local officials have said.</p>
             <div class="details">2 hrs ago | World</div>
         </div>
 
         <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/d644/live/54998d70-865b-11ef-beac-1d00347925c8.jpg.webp" alt="News Image">
-            <a href="/ArticleB"><h2>Diddy's trial to start in May 2025</h2></a>
+            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/d644/live/54998d70-865b-11ef-beac-1d00347925c8.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('Business') }}"><h2>Diddy's trial to start in May 2025</h2></a>
             <p>The rap mogul denies sex trafficking and racketeering charges, plus dozens of other lawsuits alleging abuse.</p>
             <div class="details">1 hr ago | Local</div>
         </div>
 
         <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/3424/live/c3d23c10-210a-11f0-9c65-a5c3dc449bf3.jpg.webp" alt="News Image">
-            <a href="/ArticleC"><h2>Pakistan suspends visas for Indians after deadly Kashmir attack on tourists</h2></a>
+            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/3424/live/c3d23c10-210a-11f0-9c65-a5c3dc449bf3.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('Technology') }}"><h2>Pakistan suspends visas for Indians after deadly Kashmir attack on tourists</h2></a>
             <p>It comes after Delhi's retaliatory measures following a militant attack in Indian-administered Kashmir that killed 26 tourists.</p>
             <div class="details">16 hrs ago | Asia</div>
         </div>
 
         <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/images/ic/800xn/p0hm8vdd.jpg.webp" alt="News Image">
-            <a href="/ArticleD"><h2>Five standout cities making the world a better place</h2></a>
+            <img src="https://ichef.bbci.co.uk/images/ic/800xn/p0hm8vdd.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('Sport') }}"><h2>Five standout cities making the world a better place</h2></a>
             <p>The Global Destination Sustainability Index reveals the destinations that are working towards a sustainable and lower-carbon future</p>
             <div class="details">2 hrs ago | Asia</div>
         </div>
 
          <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/66d9/live/b8298860-21cc-11f0-8c2e-77498b1ce297.jpg.webp" alt="News Image">
-            <a href="/ArticleE"><h2>California passes Japan as fourth largest economy</h2></a>
+            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/66d9/live/b8298860-21cc-11f0-8c2e-77498b1ce297.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('Culture') }}"><h2>California passes Japan as fourth largest economy</h2></a>
             <p>The US state expresses worries that President Donald Trump's tariffs could stunt future growth.</p>
             <div class="details">3 hrs ago | World</div>
         </div>
 
         <div class="news-item">
-            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/cfbe/live/afa5c5e0-20e2-11f0-9b17-b99e39a28c13.jpg.webp" alt="News Image">
-            <a href="/ArticleF"><h2>Mass food poisonings cast shadow over Indonesia's free school meals</h2></a>
+            <img src="https://ichef.bbci.co.uk/news/800/cpsprodpb/cfbe/live/afa5c5e0-20e2-11f0-9b17-b99e39a28c13.jpg.webp" alt="News Image" width="800" height="450">
+            <a href="{{ url_for('Opinion') }}"><h2>Mass food poisonings cast shadow over Indonesia's free school meals</h2></a>
             <p>Nearly 80 students across two high schools fell sick after eating the meals this week.</p>
             <div class="details">7 hrs ago | Asia</div>
         </div>
     </div>
     <footer class="bbc-footer">
-    <a href="#"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" style="height: 120px; margin-bottom: 10px;"></a>
+    <a href="{{ url_for('index') }}"><img src="https://www.pngall.com/wp-content/uploads/15/BBC-Logo-PNG-Image.png" alt="BBC Logo" class="footer-logo" width="360" height="120"></a>
     <div class="footer-links">
-        <a href="/index">Home</a>
-        <a href="/article">Article</a>
-        <a href="/weather">Weather</a>
-        <a href="/comment">Comment</a>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('Article') }}">Article</a>
+        <a href="{{ url_for('weather') }}">Weather</a>
+        <a href="{{ url_for('comment') }}">Comment</a>
         
     </div>
     <div class="language-select">

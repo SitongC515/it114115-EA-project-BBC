@@ -106,20 +106,32 @@ class Post(db.Model):
         return f'<Post {self.body}>'
     
 class Article(db.Model):
+    __tablename__ = 'article'
+
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    
+    headline = db.Column(db.String(255), nullable=False)
+    summary = db.Column(db.String(512))
+    body = db.Column(db.Text)
+    category = db.Column(db.String(64))  # kept as string to match existing migration
+    image_url = db.Column(db.String(512))
+    published_at = db.Column(db.DateTime)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    author = db.relationship('User', backref='articles')
+
     def __repr__(self):
-        return f"Article('{self.title}', '{self.date_posted}')"
-    
+        return f"Article('{self.headline}', '{self.published_at}')"
+
+
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(255), nullable=False)
     date_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref='comments')
+    # Associate comments optionally to an article; nullable to allow site-wide comments
+    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=True)
+    article = db.relationship('Article', backref='comments')
 
     def __repr__(self):
         return f"Comment('{self.text}', '{self.date_posted}')"
@@ -167,26 +179,15 @@ class Category(db.Model):
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.id')) 
 
     children = db.relationship('Category', backref=db.backref('parent', remote_side=[id]))
-    articles = db.relationship('Article', secondary='article_category',
-                             backref=db.backref('categories', lazy='dynamic'),
-                             lazy='dynamic')
+    # Previously this related to Article; in the category-first design
+    # articles relationship will be implemented via a concrete Article model
+    # or via Posts linked to categories. For Phase1/Phase2 tests we avoid
+    # declaring an Article class here.
     
     def __repr__(self):
         return f"Category('{self.name}')"
 
-class ArticleCategory(db.Model):
-    __tablename__ = "article_category"
-    
-    id = db.Column(db.Integer, primary_key=True)
-    article_id = db.Column(db.Integer, db.ForeignKey('article.id'), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    article = db.relationship('Article', backref=db.backref('article_categories', lazy=True))
-    category = db.relationship('Category', backref=db.backref('article_categories', lazy=True))
-    
-    def __repr__(self):
-        return f"ArticleCategory(article_id={self.article_id}, category_id={self.category_id})"
+# ArticleCategory association table removed (no direct Article model present)
 
 
 class Permission(db.Model):
